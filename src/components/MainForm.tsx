@@ -48,7 +48,10 @@ const MainForm = () => {
       const { data: ingredientsData, error: ingredientsError } = await supabase.functions.invoke(
         'analyze-ingredients',
         {
-          body: { images: uploadedImages }
+          body: { 
+            images: uploadedImages,
+            requirements: requirements // Pass requirements to the analyze-ingredients function
+          }
         }
       );
 

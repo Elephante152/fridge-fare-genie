@@ -12,23 +12,28 @@ serve(async (req) => {
   }
 
   try {
-    const { images } = await req.json()
+    const { images, requirements } = await req.json()
     
     if (!images || images.length === 0) {
       throw new Error('No images provided')
     }
 
+    console.log('Analyzing ingredients with requirements:', requirements);
+
     const messages = [
       {
         role: 'system',
-        content: 'You are a helpful assistant that identifies cooking ingredients in images. Return a JSON array of ingredient names, being as specific as possible about quantities when visible.',
+        content: `You are a helpful assistant that identifies cooking ingredients in images. 
+        Return a JSON array of ingredient names, being as specific as possible about quantities when visible. 
+        Consider any dietary restrictions or preferences in your analysis.`,
       },
       {
         role: 'user',
         content: [
           {
             type: 'text',
-            text: 'What ingredients do you see in these images? Please identify them specifically.',
+            text: `What ingredients do you see in these images? Please identify them specifically. 
+            Consider these additional requirements/preferences: ${requirements || 'None'}`,
           },
           ...images.map((url: string) => ({
             type: 'image_url',
