@@ -95,7 +95,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 30s ease infinite", // Slowed down from 15s to 30s and using cubic-bezier
+        "gradient": "gradient 300s ease infinite", // Slowed down from 30s to 300s for ultra-smooth animation
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
