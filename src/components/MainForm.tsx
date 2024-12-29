@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import ImageUpload from '@/components/ImageUpload';
 import RecipeResultModal from '@/components/RecipeResultModal';
 import { triggerConfetti } from '@/utils/confetti';
+import { generateRecipes } from '@/services/openai';
 import type { Recipe } from '@/types/recipe';
 
 const MainForm = () => {
@@ -41,75 +42,23 @@ const MainForm = () => {
     }
 
     setIsLoading(true);
-    // TODO: Implement OpenAI API integration
-    // For now, we'll use mock data
-    setTimeout(() => {
-      const mockRecipes: Recipe[] = [
-        {
-          title: "Creamy Mushroom Pasta",
-          description: "A delicious vegetarian pasta dish with sautéed mushrooms and herbs",
-          cookingTime: "25 mins",
-          servings: 4,
-          ingredients: [
-            "8 oz pasta",
-            "2 cups mushrooms, sliced",
-            "3 cloves garlic, minced",
-            "1 cup heavy cream",
-            "Fresh parsley",
-            "Salt and pepper to taste"
-          ],
-          instructions: [
-            "Cook pasta according to package instructions",
-            "Sauté mushrooms and garlic until golden",
-            "Add cream and simmer until thickened",
-            "Toss with pasta and garnish with parsley"
-          ]
-        },
-        {
-          title: "Mediterranean Quinoa Bowl",
-          description: "Fresh and healthy quinoa bowl with roasted vegetables",
-          cookingTime: "30 mins",
-          servings: 3,
-          ingredients: [
-            "1 cup quinoa",
-            "2 cups mixed vegetables",
-            "Olive oil",
-            "Lemon juice",
-            "Fresh herbs"
-          ],
-          instructions: [
-            "Cook quinoa in vegetable broth",
-            "Roast vegetables with olive oil",
-            "Combine and dress with lemon juice",
-            "Top with fresh herbs"
-          ]
-        },
-        {
-          title: "Spiced Chickpea Stew",
-          description: "Warming stew with aromatic spices and tender chickpeas",
-          cookingTime: "40 mins",
-          servings: 4,
-          ingredients: [
-            "2 cans chickpeas",
-            "1 onion, diced",
-            "2 tomatoes, chopped",
-            "Spice blend",
-            "Coconut milk"
-          ],
-          instructions: [
-            "Sauté onions until translucent",
-            "Add spices and toast briefly",
-            "Add chickpeas and tomatoes",
-            "Simmer with coconut milk"
-          ]
-        }
-      ];
-      
-      setRecipes(mockRecipes);
-      setIsLoading(false);
+    try {
+      // For now, we'll just pass the image URLs as ingredients
+      // In a real application, you'd want to process these images through computer vision
+      const mockIngredients = ['tomatoes', 'pasta', 'olive oil', 'garlic', 'basil'];
+      const recipes = await generateRecipes(mockIngredients, requirements);
+      setRecipes(recipes);
       triggerConfetti();
       setShowResults(true);
-    }, 2000);
+    } catch (error) {
+      toast({
+        title: "Error generating recipes",
+        description: "Something went wrong while generating your recipes. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
