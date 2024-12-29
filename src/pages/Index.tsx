@@ -112,49 +112,56 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F1F1F1]">
-      <div className="container max-w-3xl py-12 px-4 md:px-0">
-        <div className="space-y-6 text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-serif font-medium tracking-tight text-[#222222]">
+    <div className="min-h-screen bg-[#F9F7F3]">
+      <div className="container max-w-4xl py-16 px-4 md:px-6 space-y-12 animate-fade-in">
+        <div className="space-y-4 text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-[#222222]">
             Recipe Genie
           </h1>
-          <p className="text-[#555555] text-lg max-w-2xl mx-auto">
-            Transform your ingredients into delicious recipes with AI-powered suggestions
+          <p className="text-[#555555] text-lg md:text-xl max-w-2xl mx-auto font-light">
+            Transform your ingredients into culinary masterpieces with AI-powered recipe suggestions
           </p>
         </div>
         
-        <div className="space-y-8 bg-white rounded-2xl p-6 md:p-8 shadow-sm">
-          <div className="space-y-4">
-            <h2 className="text-xl font-medium text-[#333333] text-left">
-              Upload Your Ingredients
-            </h2>
-            <p className="text-[#666666] text-sm text-left mb-4">
-              Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul. Make sure items are visible and well-lit for the best results.
-            </p>
+        <div className="space-y-10 bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-serif text-[#333333]">
+                Capture Your Ingredients
+              </h2>
+              <p className="text-[#666666] text-base leading-relaxed">
+                Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul. For best results, ensure items are:
+              </p>
+              <ul className="text-[#666666] text-base space-y-2 ml-5 list-disc">
+                <li>Well-lit and clearly visible</li>
+                <li>Arranged with minimal overlap</li>
+                <li>Labels facing the camera when possible</li>
+              </ul>
+            </div>
             <ImageUpload onImageUpload={handleImageUpload} />
           </div>
           
           <div className="space-y-4">
-            <h2 className="text-xl font-medium text-[#333333] text-left">
+            <h2 className="text-2xl font-serif text-[#333333]">
               Additional Requirements
             </h2>
             <Textarea
               placeholder="Add any dietary preferences, restrictions, or specific requirements..."
               value={requirements}
               onChange={(e) => setRequirements(e.target.value)}
-              className="min-h-[100px] resize-none border-gray-200 focus:border-recipe-sage focus:ring-recipe-sage"
+              className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-gray-200 focus:border-recipe-sage focus:ring-recipe-sage transition-colors"
             />
           </div>
           
           <Button
             onClick={handleGenerate}
-            className="w-full bg-recipe-sage hover:bg-recipe-sage/90 transition-all duration-200 py-6 text-lg font-medium"
+            className="w-full bg-recipe-sage hover:bg-recipe-sage/90 transition-all duration-300 py-6 text-lg font-medium rounded-2xl"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Generating recipes...
+                Crafting your recipes...
               </>
             ) : (
               'Generate Recipes'
@@ -163,11 +170,11 @@ const Index = () => {
         </div>
 
         {recipes.length > 0 && (
-          <div className="space-y-6 mt-12">
-            <h2 className="text-2xl font-serif font-medium text-[#333333] text-left">
+          <div className="space-y-8">
+            <h2 className="text-3xl font-serif text-[#333333] text-center">
               Your Recipes
             </h2>
-            <div className="space-y-4">
+            <div className="grid gap-6">
               {recipes.map((recipe, index) => (
                 <RecipeCard
                   key={index}
