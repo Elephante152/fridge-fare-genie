@@ -23,10 +23,10 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
   });
 
   // Get all props from dropzone
-  const { ref, onClick, onKeyDown, onFocus, onBlur, onDrag, onDragStart, onDragEnd, onDragEnter, onDragLeave, onDragOver, onDrop: onDropEvent, ...rootProps } = getRootProps();
+  const { ref, onClick, onKeyDown, onFocus, onBlur, onDragEnter, onDragLeave, onDragOver, onDrop: onDropEvent, ...rootProps } = getRootProps();
 
-  // Define motion-specific props, excluding any drag-related events
-  const motionProps: Omit<HTMLMotionProps<"div">, keyof typeof rootProps | 'onDrag' | 'onDragStart' | 'onDragEnd'> = {
+  // Define motion-specific props
+  const motionProps: HTMLMotionProps<"div"> = {
     whileHover: { scale: 1.02 },
     whileTap: { scale: 0.98 },
     animate: isDragActive ? {
@@ -44,9 +44,6 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
       onKeyDown={onKeyDown}
       onFocus={onFocus}
       onBlur={onBlur}
-      onDrag={onDrag}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
