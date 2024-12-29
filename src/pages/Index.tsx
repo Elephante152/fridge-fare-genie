@@ -112,28 +112,48 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-recipe-cream">
-      <div className="container max-w-4xl py-8">
-        <h1 className="text-4xl font-serif text-center mb-8">AI Recipe Generator</h1>
+    <div className="min-h-screen bg-[#F1F1F1]">
+      <div className="container max-w-3xl py-12 px-4 md:px-0">
+        <div className="space-y-6 text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-serif font-medium tracking-tight text-[#222222]">
+            Recipe Genie
+          </h1>
+          <p className="text-[#555555] text-lg max-w-2xl mx-auto">
+            Transform your ingredients into delicious recipes with AI-powered suggestions
+          </p>
+        </div>
         
-        <div className="space-y-6 mb-8">
-          <ImageUpload onImageUpload={handleImageUpload} />
+        <div className="space-y-8 bg-white rounded-2xl p-6 md:p-8 shadow-sm">
+          <div className="space-y-4">
+            <h2 className="text-xl font-medium text-[#333333] text-left">
+              Upload Your Ingredients
+            </h2>
+            <p className="text-[#666666] text-sm text-left mb-4">
+              Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul. Make sure items are visible and well-lit for the best results.
+            </p>
+            <ImageUpload onImageUpload={handleImageUpload} />
+          </div>
           
-          <Textarea
-            placeholder="Add any dietary requirements or preferences..."
-            value={requirements}
-            onChange={(e) => setRequirements(e.target.value)}
-            className="min-h-[100px]"
-          />
+          <div className="space-y-4">
+            <h2 className="text-xl font-medium text-[#333333] text-left">
+              Additional Requirements
+            </h2>
+            <Textarea
+              placeholder="Add any dietary preferences, restrictions, or specific requirements..."
+              value={requirements}
+              onChange={(e) => setRequirements(e.target.value)}
+              className="min-h-[100px] resize-none border-gray-200 focus:border-recipe-sage focus:ring-recipe-sage"
+            />
+          </div>
           
           <Button
             onClick={handleGenerate}
-            className="w-full bg-recipe-sage hover:bg-recipe-sage/90"
+            className="w-full bg-recipe-sage hover:bg-recipe-sage/90 transition-all duration-200 py-6 text-lg font-medium"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Generating recipes...
               </>
             ) : (
@@ -143,16 +163,20 @@ const Index = () => {
         </div>
 
         {recipes.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-2xl font-serif mb-4">Generated Recipes</h2>
-            {recipes.map((recipe, index) => (
-              <RecipeCard
-                key={index}
-                recipe={recipe}
-                isExpanded={expandedIndex === index}
-                onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              />
-            ))}
+          <div className="space-y-6 mt-12">
+            <h2 className="text-2xl font-serif font-medium text-[#333333] text-left">
+              Your Recipes
+            </h2>
+            <div className="space-y-4">
+              {recipes.map((recipe, index) => (
+                <RecipeCard
+                  key={index}
+                  recipe={recipe}
+                  isExpanded={expandedIndex === index}
+                  onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
