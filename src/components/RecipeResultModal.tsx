@@ -27,7 +27,7 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[80vh] p-0 gap-0">
+      <DialogContent className="max-w-3xl max-h-[80vh] p-0 gap-0 bg-white/95 backdrop-blur-sm">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="text-2xl font-serif">Your Recipe Results</DialogTitle>
         </DialogHeader>
@@ -38,23 +38,32 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
               <h3 className="text-lg font-semibold font-serif text-brand-myrtleGreen">Images Used</h3>
               <div className="flex gap-3 flex-wrap">
                 {images.map((image, index) => (
-                  <img 
+                  <motion.img 
                     key={index}
                     src={image} 
                     alt={`Ingredient ${index + 1}`} 
                     className="w-24 h-24 object-cover rounded-lg shadow-sm border border-brand-aquamarine/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
                   />
                 ))}
               </div>
             </div>
             
             {requirements && (
-              <div className="space-y-3">
+              <motion.div 
+                className="space-y-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <h3 className="text-lg font-semibold font-serif text-brand-myrtleGreen">Requirements</h3>
                 <p className="text-muted-foreground bg-brand-platinum/30 p-4 rounded-lg">
                   {requirements}
                 </p>
-              </div>
+              </motion.div>
             )}
 
             <div className="space-y-4">
@@ -62,12 +71,14 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
               {recipes.map((recipe, index) => (
                 <motion.div 
                   key={index}
-                  initial={false}
-                  className="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="border rounded-lg overflow-hidden bg-white/80 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <button
                     onClick={() => toggleRecipe(index)}
-                    className="w-full p-4 flex justify-between items-center gap-4 text-left"
+                    className="w-full p-4 flex justify-between items-center gap-4 text-left hover:bg-brand-yellow/10 transition-colors"
                   >
                     <div>
                       <h4 className="font-semibold text-lg font-serif">{recipe.title}</h4>
@@ -83,39 +94,70 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
                   <AnimatePresence>
                     {expandedRecipeIndex === index && (
                       <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.2 }}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
                         <div className="p-4 pt-0 border-t bg-brand-platinum/10">
                           <div className="grid md:grid-cols-2 gap-6">
-                            <div className="space-y-3">
+                            <motion.div 
+                              className="space-y-3"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                            >
                               <h5 className="font-medium text-brand-myrtleGreen">Ingredients</h5>
                               <ul className="list-disc list-inside space-y-1 text-sm">
                                 {recipe.ingredients?.map((ingredient, i) => (
-                                  <li key={i} className="text-muted-foreground">{ingredient}</li>
+                                  <motion.li 
+                                    key={i} 
+                                    className="text-muted-foreground"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                                  >
+                                    {ingredient}
+                                  </motion.li>
                                 ))}
                               </ul>
-                            </div>
-                            <div className="space-y-3">
+                            </motion.div>
+                            <motion.div 
+                              className="space-y-3"
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                            >
                               <h5 className="font-medium text-brand-myrtleGreen">Instructions</h5>
                               <ol className="list-decimal list-inside space-y-2 text-sm">
                                 {recipe.instructions?.map((instruction, i) => (
-                                  <li key={i} className="text-muted-foreground">{instruction}</li>
+                                  <motion.li 
+                                    key={i} 
+                                    className="text-muted-foreground"
+                                    initial={{ opacity: 0, x: 10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                                  >
+                                    {instruction}
+                                  </motion.li>
                                 ))}
                               </ol>
-                            </div>
+                            </motion.div>
                           </div>
-                          <div className="mt-4 flex gap-4 text-sm text-muted-foreground">
+                          <motion.div 
+                            className="mt-4 flex gap-4 text-sm text-muted-foreground"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                          >
                             {recipe.cookingTime && (
                               <span>🕒 {recipe.cookingTime}</span>
                             )}
                             {recipe.servings && (
                               <span>👥 Serves {recipe.servings}</span>
                             )}
-                          </div>
+                          </motion.div>
                         </div>
                       </motion.div>
                     )}
