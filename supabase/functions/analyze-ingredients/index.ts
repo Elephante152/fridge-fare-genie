@@ -37,7 +37,9 @@ serve(async (req) => {
           },
           ...images.map((url: string) => ({
             type: 'image_url',
-            image_url: url,
+            image_url: {
+              url: url
+            }
           })),
         ],
       },
