@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
 interface ImageUploadProps {
   onImageUpload: (file: File) => void;
@@ -22,20 +22,22 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
     multiple: false
   });
 
+  const motionProps: HTMLMotionProps<"div"> = {
+    ...getRootProps(),
+    className: `border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
+      ${isDragActive 
+        ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
+        : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`,
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 0.98 },
+    animate: isDragActive ? {
+      borderColor: ['#297373', '#85FFC7', '#297373'],
+      transition: { duration: 2, repeat: Infinity }
+    } : undefined
+  };
+
   return (
-    <motion.div
-      {...getRootProps()}
-      className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
-        ${isDragActive 
-          ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
-          : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      animate={isDragActive ? {
-        borderColor: ['#297373', '#85FFC7', '#297373'],
-        transition: { duration: 2, repeat: Infinity }
-      } : {}}
-    >
+    <motion.div {...motionProps}>
       <input {...getInputProps()} />
       <motion.div
         initial={{ scale: 0.8 }}
