@@ -22,8 +22,11 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
     multiple: false
   });
 
+  const { ref, ...rootProps } = getRootProps();
+
   const motionProps: HTMLMotionProps<"div"> = {
-    ...getRootProps(),
+    ...rootProps,
+    ref,
     className: `border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
       ${isDragActive 
         ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
