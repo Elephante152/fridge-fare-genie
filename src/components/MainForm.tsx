@@ -9,6 +9,7 @@ import RecipeResultModal from '@/components/RecipeResultModal';
 import { triggerConfetti } from '@/utils/confetti';
 import { generateRecipes } from '@/services/openai';
 import type { Recipe } from '@/types/recipe';
+import { supabase } from '@/integrations/supabase/client';
 
 const MainForm = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -43,17 +44,22 @@ const MainForm = () => {
 
     setIsLoading(true);
     try {
-      // For now, we'll use some temporary ingredients until we implement image recognition
-      const temporaryIngredients = [
-        'tomatoes',
-        'pasta',
-        'olive oil',
-        'garlic',
-        'basil',
-        'parmesan cheese'
-      ];
+      // First, analyze the ingredients in the images
+      const { data: ingredientsData, error: ingredientsError } = await supabase.functions.invoke(
+        'analyze-ingredients',
+        {
+          body: { images: uploadedImages }
+        }
+      );
+
+      if (ingredientsError) {
+        throw new Error('Failed to analyze ingredients');
+      }
+
+      console.log('Identified ingredients:', ingredientsData.ingredients);
       
-      const recipes = await generateRecipes(temporaryIngredients, requirements);
+      // Then generate recipes based on the identified ingredients
+      const recipes = await generateRecipes(ingredientsData.ingredients, requirements);
       setRecipes(recipes);
       triggerConfetti();
       setShowResults(true);
@@ -116,7 +122,7 @@ const MainForm = () => {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Crafting your recipes...
+              Analyzing ingredients...
             </>
           ) : (
             'Generate Recipes'
