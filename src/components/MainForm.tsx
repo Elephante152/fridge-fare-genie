@@ -92,11 +92,11 @@ const MainForm = () => {
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       <div className="space-y-6">
-        <div className="space-y-2">
+        <div className="space-y-4">
           <h2 className="text-2xl font-serif text-brand-myrtleGreen">
             Capture Your Ingredients
           </h2>
-          <p className="text-brand-jet/70 text-base leading-relaxed">
+          <p className="text-brand-jet/70 text-base leading-relaxed max-w-2xl mx-auto">
             Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul.
           </p>
         </div>
@@ -125,7 +125,11 @@ const MainForm = () => {
       >
         <Button
           onClick={handleGenerate}
-          className="w-full bg-brand-yellow hover:bg-brand-yellow/90 text-brand-jet transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
+            ${isLoading 
+              ? 'bg-brand-myrtleGreen text-white' 
+              : 'bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow hover:bg-gradient-to-l text-brand-jet animate-gradient'
+            }`}
           disabled={isLoading}
         >
           {isLoading ? (
