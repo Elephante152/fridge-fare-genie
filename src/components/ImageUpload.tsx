@@ -22,11 +22,11 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
     multiple: false
   });
 
-  // Separate dropzone props from motion props
-  const { ref, onClick, onKeyDown, onFocus, onBlur, ...rootProps } = getRootProps();
+  // Get all props from dropzone
+  const { ref, onClick, onKeyDown, onFocus, onBlur, onDrag, onDragStart, onDragEnd, onDragEnter, onDragLeave, onDragOver, onDrop: onDropEvent, ...rootProps } = getRootProps();
 
-  // Define motion-specific props
-  const motionProps: Omit<HTMLMotionProps<"div">, keyof typeof rootProps> = {
+  // Define motion-specific props, excluding any drag-related events
+  const motionProps: Omit<HTMLMotionProps<"div">, keyof typeof rootProps | 'onDrag' | 'onDragStart' | 'onDragEnd'> = {
     whileHover: { scale: 1.02 },
     whileTap: { scale: 0.98 },
     animate: isDragActive ? {
@@ -44,6 +44,13 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
       onKeyDown={onKeyDown}
       onFocus={onFocus}
       onBlur={onBlur}
+      onDrag={onDrag}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragEnter={onDragEnter}
+      onDragLeave={onDragLeave}
+      onDragOver={onDragOver}
+      onDrop={onDropEvent}
       className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
         ${isDragActive 
           ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
