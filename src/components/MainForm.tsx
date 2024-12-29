@@ -20,8 +20,14 @@ const MainForm = () => {
   const { toast } = useToast();
 
   const handleImageUpload = (files: File[]) => {
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setUploadedImages(prev => [...prev, ...newImages]);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImages(prev => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+    
     toast({
       title: `${files.length} image${files.length > 1 ? 's' : ''} uploaded`,
       description: "Your ingredients have been added successfully.",
@@ -50,7 +56,7 @@ const MainForm = () => {
         {
           body: { 
             images: uploadedImages,
-            requirements: requirements // Pass requirements to the analyze-ingredients function
+            requirements: requirements
           }
         }
       );

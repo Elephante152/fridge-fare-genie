@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
+import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -35,10 +35,10 @@ serve(async (req) => {
             text: `What ingredients do you see in these images? Please identify them specifically. 
             Consider these additional requirements/preferences: ${requirements || 'None'}`,
           },
-          ...images.map((url: string) => ({
+          ...images.map((base64Image: string) => ({
             type: 'image_url',
             image_url: {
-              url: url
+              url: base64Image
             }
           })),
         ],
