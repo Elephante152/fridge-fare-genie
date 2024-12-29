@@ -48,7 +48,7 @@ export default {
         brand: {
           aquamarine: "#85FFC7",
           myrtleGreen: "#297373",
-          yellow: "#E3B448", // Updated to a more mustard tone
+          yellow: "#E3B448",
           platinum: "#E6E6E6",
           jet: "#39393A",
         },
@@ -76,13 +76,17 @@ export default {
           "50%": { transform: "translateY(-20px)" },
         },
         "gradient": {
-          "0%, 100%": {
+          "0%": {
             "background-size": "200% 200%",
-            "background-position": "left center"
+            "background-position": "0% 50%"
           },
           "50%": {
             "background-size": "200% 200%",
-            "background-position": "right center"
+            "background-position": "100% 50%"
+          },
+          "100%": {
+            "background-size": "200% 200%",
+            "background-position": "0% 50%"
           }
         },
       },
@@ -91,7 +95,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 15s ease infinite", // Slowed down from 8s to 15s
+        "gradient": "gradient 30s ease infinite", // Slowed down from 15s to 30s and using cubic-bezier
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
