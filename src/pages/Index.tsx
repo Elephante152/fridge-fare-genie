@@ -144,13 +144,8 @@ const Index = () => {
                 Capture Your Ingredients
               </h2>
               <p className="text-brand-jet/70 text-base leading-relaxed">
-                Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul. For best results, ensure items are:
+                Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul.
               </p>
-              <ul className="text-brand-jet/70 text-base space-y-2 ml-5 list-disc">
-                <li>Well-lit and clearly visible</li>
-                <li>Arranged with minimal overlap</li>
-                <li>Labels facing the camera when possible</li>
-              </ul>
             </div>
             <ImageUpload onImageUpload={handleImageUpload} />
           </div>
