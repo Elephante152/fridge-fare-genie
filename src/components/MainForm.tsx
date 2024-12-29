@@ -43,18 +43,17 @@ const MainForm = () => {
 
     setIsLoading(true);
     try {
-      // For now, we'll use some example ingredients until we implement image recognition
-      const exampleIngredients = [
-        'chicken breast',
-        'rice',
-        'broccoli',
-        'carrots',
-        'soy sauce',
+      // For now, we'll use some temporary ingredients until we implement image recognition
+      const temporaryIngredients = [
+        'tomatoes',
+        'pasta',
+        'olive oil',
         'garlic',
-        'ginger'
+        'basil',
+        'parmesan cheese'
       ];
       
-      const recipes = await generateRecipes(exampleIngredients, requirements);
+      const recipes = await generateRecipes(temporaryIngredients, requirements);
       setRecipes(recipes);
       triggerConfetti();
       setShowResults(true);
