@@ -6,38 +6,37 @@ import { useToast } from '@/components/ui/use-toast';
 import ImageUpload from '@/components/ImageUpload';
 import RecipeCard from '@/components/RecipeCard';
 import EmojiBackground from '@/components/EmojiBackground';
+import RecipeResultModal from '@/components/RecipeResultModal';
 import { motion } from 'framer-motion';
-
-interface Recipe {
-  title: string;
-  description: string;
-  cookingTime: string;
-  servings: number;
-  ingredients: string[];
-  instructions: string[];
-}
+import { triggerConfetti } from '@/utils/confetti';
+import type { Recipe } from '@/types/recipe';
 
 const Index = () => {
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [requirements, setRequirements] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [showResults, setShowResults] = useState(false);
   const { toast } = useToast();
 
-  const handleImageUpload = (file: File) => {
-    setUploadedImage(file);
+  const handleImageUpload = (files: File[]) => {
+    const newImages = files.map(file => URL.createObjectURL(file));
+    setUploadedImages(prev => [...prev, ...newImages]);
     toast({
-      title: "Image uploaded successfully",
-      description: file.name,
+      title: `${files.length} image${files.length > 1 ? 's' : ''} uploaded`,
+      description: "Your ingredients have been added successfully.",
     });
   };
 
+  const handleRemoveImage = (index: number) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleGenerate = async () => {
-    if (!uploadedImage) {
+    if (uploadedImages.length === 0) {
       toast({
-        title: "No image uploaded",
-        description: "Please upload an image of your ingredients first.",
+        title: "No images uploaded",
+        description: "Please upload at least one image of your ingredients first.",
         variant: "destructive",
       });
       return;
@@ -110,6 +109,8 @@ const Index = () => {
       
       setRecipes(mockRecipes);
       setIsLoading(false);
+      triggerConfetti();
+      setShowResults(true);
     }, 2000);
   };
 
@@ -147,7 +148,11 @@ const Index = () => {
                 Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul.
               </p>
             </div>
-            <ImageUpload onImageUpload={handleImageUpload} />
+            <ImageUpload 
+              onImageUpload={handleImageUpload}
+              uploadedImages={uploadedImages}
+              onRemoveImage={handleRemoveImage}
+            />
           </div>
           
           <div className="space-y-4">
@@ -183,34 +188,13 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {recipes.length > 0 && (
-          <motion.div 
-            className="space-y-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl font-serif text-brand-myrtleGreen text-center">
-              Your Recipes
-            </h2>
-            <div className="grid gap-6">
-              {recipes.map((recipe, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <RecipeCard
-                    recipe={recipe}
-                    isExpanded={expandedIndex === index}
-                    onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        <RecipeResultModal
+          isOpen={showResults}
+          onClose={() => setShowResults(false)}
+          recipes={recipes}
+          requirements={requirements}
+          images={uploadedImages}
+        />
       </div>
     </div>
   );
