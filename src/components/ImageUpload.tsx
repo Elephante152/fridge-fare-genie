@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload } from 'lucide-react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import { Upload, Sun, Layout, Tag } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ImageUploadProps {
   onImageUpload: (file: File) => void;
@@ -22,23 +22,11 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
     multiple: false
   });
 
-  // Get all props from dropzone
-  const { ref, onClick, onKeyDown, onFocus, onBlur, onDragEnter, onDragLeave, onDragOver, onDrop: onDropEvent, ...rootProps } = getRootProps();
-
-  // Define motion-specific props
-  const motionProps: HTMLMotionProps<"div"> = {
-    whileHover: { scale: 1.02 },
-    whileTap: { scale: 0.98 },
-    animate: isDragActive ? {
-      borderColor: ['#297373', '#85FFC7', '#297373'],
-      transition: { duration: 2, repeat: Infinity }
-    } : undefined
-  };
+  // Get only the necessary props from dropzone
+  const { ref, onClick, onKeyDown, onFocus, onBlur, onDragEnter, onDragLeave, onDragOver, onDrop: onDropEvent } = getRootProps();
 
   return (
     <motion.div
-      {...rootProps}
-      {...motionProps}
       ref={ref}
       onClick={onClick}
       onKeyDown={onKeyDown}
@@ -48,6 +36,12 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
       onDrop={onDropEvent}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      animate={isDragActive ? {
+        borderColor: ['#297373', '#85FFC7', '#297373'],
+        transition: { duration: 2, repeat: Infinity }
+      } : undefined}
       className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
         ${isDragActive 
           ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
@@ -68,16 +62,16 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
           {isDragActive ? 'Drop your image here' : 'Drag & drop an image, or click to select'}
         </p>
         <div className="mt-6 space-y-4">
-          <div className="flex items-center justify-center space-x-2 text-brand-jet/70">
-            <span className="w-2 h-2 rounded-full bg-brand-myrtleGreen"></span>
+          <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+            <Sun className="w-5 h-5 text-brand-myrtleGreen" />
             <p>Well-lit and clearly visible</p>
           </div>
-          <div className="flex items-center justify-center space-x-2 text-brand-jet/70">
-            <span className="w-2 h-2 rounded-full bg-brand-myrtleGreen"></span>
+          <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+            <Layout className="w-5 h-5 text-brand-myrtleGreen" />
             <p>Arranged with minimal overlap</p>
           </div>
-          <div className="flex items-center justify-center space-x-2 text-brand-jet/70">
-            <span className="w-2 h-2 rounded-full bg-brand-myrtleGreen"></span>
+          <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+            <Tag className="w-5 h-5 text-brand-myrtleGreen" />
             <p>Labels facing the camera when possible</p>
           </div>
         </div>
