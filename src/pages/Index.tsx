@@ -5,6 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import ImageUpload from '@/components/ImageUpload';
 import RecipeCard from '@/components/RecipeCard';
+import EmojiBackground from '@/components/EmojiBackground';
+import { motion } from 'framer-motion';
 
 interface Recipe {
   title: string;
@@ -112,27 +114,39 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F7F3]">
-      <div className="container max-w-4xl py-16 px-4 md:px-6 space-y-12 animate-fade-in">
-        <div className="space-y-4 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-[#222222]">
+    <div className="min-h-screen bg-brand-platinum relative overflow-hidden">
+      <EmojiBackground />
+      
+      <div className="container max-w-4xl py-16 px-4 md:px-6 space-y-12 relative z-10">
+        <motion.div 
+          className="space-y-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-brand-jet">
             Recipe Genie
           </h1>
-          <p className="text-[#555555] text-lg md:text-xl max-w-2xl mx-auto font-light">
+          <p className="text-brand-jet/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
             Transform your ingredients into culinary masterpieces with AI-powered recipe suggestions
           </p>
-        </div>
+        </motion.div>
         
-        <div className="space-y-10 bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
+        <motion.div 
+          className="space-y-10 bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-lg border border-brand-aquamarine/20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <div className="space-y-6">
             <div className="space-y-2">
-              <h2 className="text-2xl font-serif text-[#333333]">
+              <h2 className="text-2xl font-serif text-brand-myrtleGreen">
                 Capture Your Ingredients
               </h2>
-              <p className="text-[#666666] text-base leading-relaxed">
+              <p className="text-brand-jet/70 text-base leading-relaxed">
                 Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul. For best results, ensure items are:
               </p>
-              <ul className="text-[#666666] text-base space-y-2 ml-5 list-disc">
+              <ul className="text-brand-jet/70 text-base space-y-2 ml-5 list-disc">
                 <li>Well-lit and clearly visible</li>
                 <li>Arranged with minimal overlap</li>
                 <li>Labels facing the camera when possible</li>
@@ -142,49 +156,65 @@ const Index = () => {
           </div>
           
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-[#333333]">
+            <h2 className="text-2xl font-serif text-brand-myrtleGreen">
               Additional Requirements
             </h2>
             <Textarea
               placeholder="Add any dietary preferences, restrictions, or specific requirements..."
               value={requirements}
               onChange={(e) => setRequirements(e.target.value)}
-              className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-gray-200 focus:border-recipe-sage focus:ring-recipe-sage transition-colors"
+              className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-brand-aquamarine/20 focus:border-brand-myrtleGreen focus:ring-brand-myrtleGreen/20 transition-colors"
             />
           </div>
           
-          <Button
-            onClick={handleGenerate}
-            className="w-full bg-recipe-sage hover:bg-recipe-sage/90 transition-all duration-300 py-6 text-lg font-medium rounded-2xl"
-            disabled={isLoading}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Crafting your recipes...
-              </>
-            ) : (
-              'Generate Recipes'
-            )}
-          </Button>
-        </div>
+            <Button
+              onClick={handleGenerate}
+              className="w-full bg-brand-coral hover:bg-brand-coral/90 transition-all duration-300 py-6 text-lg font-medium rounded-2xl text-white"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Crafting your recipes...
+                </>
+              ) : (
+                'Generate Recipes'
+              )}
+            </Button>
+          </motion.div>
+        </motion.div>
 
         {recipes.length > 0 && (
-          <div className="space-y-8">
-            <h2 className="text-3xl font-serif text-[#333333] text-center">
+          <motion.div 
+            className="space-y-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl font-serif text-brand-myrtleGreen text-center">
               Your Recipes
             </h2>
             <div className="grid gap-6">
               {recipes.map((recipe, index) => (
-                <RecipeCard
+                <motion.div
                   key={index}
-                  recipe={recipe}
-                  isExpanded={expandedIndex === index}
-                  onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <RecipeCard
+                    recipe={recipe}
+                    isExpanded={expandedIndex === index}
+                    onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                  />
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
