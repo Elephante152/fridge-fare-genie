@@ -24,7 +24,8 @@ const ImageUpload = ({ onImageUpload, uploadedImages, onRemoveImage }: ImageUplo
     multiple: true
   });
 
-  const dropzoneProps = getRootProps();
+  // Extract only the necessary props from getRootProps
+  const { ref, ...dropzoneProps } = getRootProps();
 
   return (
     <div className="space-y-4">
@@ -48,49 +49,50 @@ const ImageUpload = ({ onImageUpload, uploadedImages, onRemoveImage }: ImageUplo
         </div>
       )}
       
-      <motion.div
-        {...dropzoneProps}
-        initial={false}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
-          ${isDragActive 
-            ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
-            : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`}
-      >
-        <input {...getInputProps()} />
+      <div {...dropzoneProps}>
         <motion.div
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20
-          }}
+          initial={false}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
+            ${isDragActive 
+              ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
+              : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`}
         >
-          <Upload className="mx-auto h-12 w-12 text-brand-myrtleGreen" />
-          <p className="mt-4 text-lg font-medium text-brand-jet">
-            {isDragActive ? 'Drop your images here' : 'Drag & drop images, or click to select'}
-          </p>
-          <div className="mt-6 space-y-4">
-            <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
-              <Sun className="w-5 h-5 text-brand-myrtleGreen" />
-              <p>Well-lit and clearly visible</p>
+          <input {...getInputProps()} />
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20
+            }}
+          >
+            <Upload className="mx-auto h-12 w-12 text-brand-myrtleGreen" />
+            <p className="mt-4 text-lg font-medium text-brand-jet">
+              {isDragActive ? 'Drop your images here' : 'Drag & drop images, or click to select'}
+            </p>
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+                <Sun className="w-5 h-5 text-brand-myrtleGreen" />
+                <p>Well-lit and clearly visible</p>
+              </div>
+              <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+                <Layout className="w-5 h-5 text-brand-myrtleGreen" />
+                <p>Arranged with minimal overlap</p>
+              </div>
+              <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
+                <Tag className="w-5 h-5 text-brand-myrtleGreen" />
+                <p>Labels facing the camera when possible</p>
+              </div>
             </div>
-            <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
-              <Layout className="w-5 h-5 text-brand-myrtleGreen" />
-              <p>Arranged with minimal overlap</p>
-            </div>
-            <div className="flex items-center justify-center space-x-3 text-brand-jet/70">
-              <Tag className="w-5 h-5 text-brand-myrtleGreen" />
-              <p>Labels facing the camera when possible</p>
-            </div>
-          </div>
-          <p className="text-sm text-brand-jet/50 mt-6">
-            Supported formats: JPEG, PNG
-          </p>
+            <p className="text-sm text-brand-jet/50 mt-6">
+              Supported formats: JPEG, PNG
+            </p>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };
