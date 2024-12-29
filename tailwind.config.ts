@@ -48,7 +48,7 @@ export default {
         brand: {
           aquamarine: "#85FFC7",
           myrtleGreen: "#297373",
-          yellow: "#FEF7CD",
+          yellow: "#E3B448", // Updated to a more mustard tone
           platinum: "#E6E6E6",
           jet: "#39393A",
         },
@@ -91,7 +91,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 8s ease infinite",
+        "gradient": "gradient 15s ease infinite", // Slowed down from 8s to 15s
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
