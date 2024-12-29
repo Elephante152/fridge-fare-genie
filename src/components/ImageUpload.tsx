@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, Sun, Layout, Tag, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
 interface ImageUploadProps {
   onImageUpload: (files: File[]) => void;
@@ -23,6 +23,8 @@ const ImageUpload = ({ onImageUpload, uploadedImages, onRemoveImage }: ImageUplo
     },
     multiple: true
   });
+
+  const dropzoneProps = getRootProps();
 
   return (
     <div className="space-y-4">
@@ -47,7 +49,8 @@ const ImageUpload = ({ onImageUpload, uploadedImages, onRemoveImage }: ImageUplo
       )}
       
       <motion.div
-        {...getRootProps()}
+        {...dropzoneProps}
+        initial={false}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
