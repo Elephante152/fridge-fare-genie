@@ -22,15 +22,11 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
     multiple: false
   });
 
-  const { ref, ...rootProps } = getRootProps();
+  // Separate dropzone props from motion props
+  const { ref, onClick, onKeyDown, onFocus, onBlur, ...rootProps } = getRootProps();
 
-  const motionProps: HTMLMotionProps<"div"> = {
-    ...rootProps,
-    ref,
-    className: `border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
-      ${isDragActive 
-        ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
-        : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`,
+  // Define motion-specific props
+  const motionProps: Omit<HTMLMotionProps<"div">, keyof typeof rootProps> = {
     whileHover: { scale: 1.02 },
     whileTap: { scale: 0.98 },
     animate: isDragActive ? {
@@ -40,7 +36,19 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
   };
 
   return (
-    <motion.div {...motionProps}>
+    <motion.div
+      {...rootProps}
+      {...motionProps}
+      ref={ref}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200
+        ${isDragActive 
+          ? 'border-brand-myrtleGreen bg-brand-aquamarine/20' 
+          : 'border-gray-200 hover:border-brand-myrtleGreen hover:bg-brand-platinum/50'}`}
+    >
       <input {...getInputProps()} />
       <motion.div
         initial={{ scale: 0.8 }}
