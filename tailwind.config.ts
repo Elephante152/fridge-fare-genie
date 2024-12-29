@@ -48,7 +48,7 @@ export default {
         brand: {
           aquamarine: "#85FFC7",
           myrtleGreen: "#297373",
-          coral: "#FF8552",
+          yellow: "#FEF7CD",
           platinum: "#E6E6E6",
           jet: "#39393A",
         },
