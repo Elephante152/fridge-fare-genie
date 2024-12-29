@@ -43,14 +43,23 @@ const MainForm = () => {
 
     setIsLoading(true);
     try {
-      // For now, we'll just pass the image URLs as ingredients
-      // In a real application, you'd want to process these images through computer vision
-      const mockIngredients = ['tomatoes', 'pasta', 'olive oil', 'garlic', 'basil'];
-      const recipes = await generateRecipes(mockIngredients, requirements);
+      // For now, we'll use some example ingredients until we implement image recognition
+      const exampleIngredients = [
+        'chicken breast',
+        'rice',
+        'broccoli',
+        'carrots',
+        'soy sauce',
+        'garlic',
+        'ginger'
+      ];
+      
+      const recipes = await generateRecipes(exampleIngredients, requirements);
       setRecipes(recipes);
       triggerConfetti();
       setShowResults(true);
     } catch (error) {
+      console.error('Error:', error);
       toast({
         title: "Error generating recipes",
         description: "Something went wrong while generating your recipes. Please try again.",
