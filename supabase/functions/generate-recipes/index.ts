@@ -21,7 +21,16 @@ serve(async (req) => {
     console.log('Requirements:', requirements);
 
     const systemPrompt = `You are a helpful cooking assistant that generates recipes based on available ingredients and user requirements. 
-    Always return recipes in a consistent JSON format with title, description, cookingTime, servings, ingredients (array), and instructions (array).`;
+    Generate exactly one recipe and return it in JSON format with the following structure:
+    {
+      "title": "Recipe Title",
+      "description": "Brief description",
+      "cookingTime": "30 minutes",
+      "servings": 4,
+      "ingredients": ["ingredient 1", "ingredient 2"],
+      "instructions": ["step 1", "step 2"]
+    }
+    Do not include any markdown formatting or code blocks in your response. Return only the JSON object.`;
 
     const userPrompt = `Generate a recipe using these ingredients: ${ingredients.join(', ')}. 
     Additional requirements: ${requirements || 'None'}. 
@@ -52,12 +61,23 @@ serve(async (req) => {
     const data = await response.json();
     console.log('OpenAI response:', data);
 
-    const generatedRecipe = JSON.parse(data.choices[0].message.content);
-    const recipes = Array.isArray(generatedRecipe) ? generatedRecipe : [generatedRecipe];
+    let recipe;
+    try {
+      // Get the content from the OpenAI response
+      const content = data.choices[0].message.content;
+      // Parse the content as JSON
+      recipe = JSON.parse(content);
+      // Ensure we always return an array of recipes
+      const recipes = [recipe];
 
-    return new Response(JSON.stringify(recipes), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+      return new Response(JSON.stringify(recipes), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    } catch (parseError) {
+      console.error('Error parsing OpenAI response:', parseError);
+      console.error('Raw content:', data.choices[0].message.content);
+      throw new Error('Failed to parse recipe data');
+    }
   } catch (error) {
     console.error('Error in generate-recipes function:', error);
     return new Response(JSON.stringify({ error: error.message }), {
