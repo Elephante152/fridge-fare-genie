@@ -19,8 +19,8 @@ const AuthPage = () => {
           navigate("/");
         }
         // Handle signup errors through the auth state change event
-        if (event === "SIGNED_UP" && !session) {
-          setError('This email is already registered. Please sign in instead.');
+        if (event === "SIGNED_IN" && !session) {
+          setError('Invalid login credentials. Please try again.');
         }
       }
     );
