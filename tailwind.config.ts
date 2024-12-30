@@ -75,27 +75,12 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-20px)" },
         },
-        "gradient": {
-          "0%": {
-            "background-size": "800% 800%",
-            "background-position": "0% 50%"
-          },
-          "50%": {
-            "background-size": "800% 800%",
-            "background-position": "100% 50%"
-          },
-          "100%": {
-            "background-size": "800% 800%",
-            "background-position": "0% 50%"
-          }
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 300000s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Ultra slow (83.3 hours) with smooth easing
       },
       fontFamily: {
         serif: ["Cormorant", "serif"],

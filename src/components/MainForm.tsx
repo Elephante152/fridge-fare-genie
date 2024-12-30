@@ -128,7 +128,7 @@ const MainForm = () => {
           className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
             ${isLoading 
               ? 'bg-brand-myrtleGreen text-white' 
-              : 'bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow hover:bg-gradient-to-l text-brand-jet animate-gradient'
+              : 'bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow hover:bg-gradient-to-l text-brand-jet'
             }`}
           disabled={isLoading}
         >
