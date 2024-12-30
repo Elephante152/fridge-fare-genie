@@ -23,7 +23,8 @@ export function UserMenu() {
         variant: "destructive",
       });
     } else {
-      navigate("/auth");
+      // Redirect to landing page instead of auth page
+      navigate("/");
     }
   };
 
