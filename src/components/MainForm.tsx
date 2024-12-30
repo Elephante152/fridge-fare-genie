@@ -79,15 +79,19 @@ const MainForm = () => {
       console.log('Identified ingredients:', ingredientsData.ingredients);
       
       // Then generate recipes based on the identified ingredients
-      const recipes = await generateRecipes(ingredientsData.ingredients, requirements);
+      const generatedRecipes = await generateRecipes(ingredientsData.ingredients, requirements);
       
+      // Transform the recipes to match the database schema
+      const recipesToSave = generatedRecipes.map(recipe => ({
+        ...recipe,
+        cooking_time: recipe.cookingTime || '30 minutes', // Provide a default value
+        user_id: user.id,
+      }));
+
       // Save the generated recipes to the database
       const { error: saveError } = await supabase
         .from('recipes')
-        .insert(recipes.map(recipe => ({
-          ...recipe,
-          user_id: user.id,
-        })));
+        .insert(recipesToSave);
 
       if (saveError) {
         console.error('Error saving recipes:', saveError);
@@ -98,7 +102,7 @@ const MainForm = () => {
         });
       }
 
-      setRecipes(recipes);
+      setRecipes(recipesToSave);
       triggerConfetti();
       setShowResults(true);
     } catch (error) {

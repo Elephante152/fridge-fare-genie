@@ -3,7 +3,7 @@ export interface Recipe {
   user_id?: string;
   title: string;
   description: string;
-  cookingTime: string;
+  cooking_time: string;
   servings: number;
   ingredients: string[];
   instructions: string[];
