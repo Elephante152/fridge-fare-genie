@@ -27,7 +27,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4-vision-preview',
+        model: 'gpt-4o',
         max_tokens: 1000,
         messages: [
           {
@@ -55,9 +55,9 @@ serve(async (req) => {
           },
         ],
       }),
-    })
+    });
 
-    const data = await response.json()
+    const data = await response.json();
     console.log('OpenAI Raw Response:', data);
 
     if (!response.ok) {
@@ -65,33 +65,33 @@ serve(async (req) => {
     }
 
     // Parse the content as JSON, removing any potential markdown formatting
-    let ingredients
+    let ingredients;
     try {
-      const content = data.choices[0].message.content
+      const content = data.choices[0].message.content;
       console.log('Raw content from OpenAI:', content);
       
       // Remove any markdown code block formatting if present
-      const cleanContent = content.replace(/```json\n|\n```|```/g, '').trim()
+      const cleanContent = content.replace(/```json\n|\n```|```/g, '').trim();
       console.log('Cleaned content:', cleanContent);
       
-      ingredients = JSON.parse(cleanContent)
+      ingredients = JSON.parse(cleanContent);
       
       if (!Array.isArray(ingredients)) {
-        throw new Error('OpenAI response is not an array')
+        throw new Error('OpenAI response is not an array');
       }
       
       console.log('Parsed ingredients:', ingredients);
     } catch (error) {
-      console.error('Error parsing ingredients:', error)
-      throw new Error(`Failed to parse ingredients from response: ${error.message}`)
+      console.error('Error parsing ingredients:', error);
+      throw new Error(`Failed to parse ingredients from response: ${error.message}`);
     }
     
     return new Response(
       JSON.stringify({ ingredients }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    );
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error:', error);
     return new Response(
       JSON.stringify({ 
         error: error.message,
@@ -101,6 +101,6 @@ serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
         status: 500 
       }
-    )
+    );
   }
-})
+});
