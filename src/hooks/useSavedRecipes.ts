@@ -25,9 +25,25 @@ export const useSavedRecipes = () => {
 
   const saveRecipe = useMutation({
     mutationFn: async (recipe: Recipe) => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) throw new Error("User not authenticated");
+
+      const recipeToSave = {
+        title: recipe.title,
+        description: recipe.description,
+        cooking_time: recipe.cookingTime,
+        servings: recipe.servings,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        user_id: user.id
+      };
+
       const { error } = await supabase
         .from("saved_recipes")
-        .insert([recipe]);
+        .insert([recipeToSave]);
 
       if (error) {
         console.error("Error saving recipe:", error);
