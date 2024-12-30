@@ -1,11 +1,14 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is already authenticated
@@ -13,6 +16,9 @@ const AuthPage = () => {
       (event, session) => {
         if (session) {
           navigate("/");
+        }
+        if (event === 'USER_SIGNUP_ERROR') {
+          setError('This email is already registered. Please sign in instead.');
         }
       }
     );
@@ -31,6 +37,12 @@ const AuthPage = () => {
             Sign in to save and manage your favorite recipes
           </p>
         </div>
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         <div className="mt-8 bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-brand-aquamarine/20">
           <Auth
             supabaseClient={supabase}
