@@ -6,11 +6,11 @@ import { Sparkles, Clock, Cookie, Shield, Utensils, Wand2 } from 'lucide-react';
 
 const BenefitCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => {
   return (
-    <div className="bg-white bg-opacity-50 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-      <div className="rounded-full w-12 h-12 bg-emerald-100 flex items-center justify-center mb-4">
+    <div className="bg-white bg-opacity-50 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      <div className="rounded-full w-12 h-12 bg-brand-aquamarine/20 flex items-center justify-center mb-4">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold mb-2 text-brand-myrtleGreen">{title}</h3>
       <p className="text-gray-600">{description}</p>
     </div>
   );
@@ -20,7 +20,6 @@ const Landing = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already authenticated
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session) {
@@ -37,19 +36,20 @@ const Landing = () => {
       <header className="relative z-10 bg-white bg-opacity-90 backdrop-blur-md border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex justify-between items-center">
-            <div className="text-2xl font-bold text-brand-myrtleGreen">
+            <div className="text-2xl font-bold text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 transition-colors duration-300">
               Recipe Generator
             </div>
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 onClick={() => navigate('/auth')}
+                className="hover:text-brand-myrtleGreen hover:bg-brand-aquamarine/20 transition-all duration-300"
               >
                 Login
               </Button>
               <Button
                 onClick={() => navigate('/auth')}
-                className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
+                className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 transition-all duration-300 animate-shimmer"
               >
                 Get Started
               </Button>
@@ -59,21 +59,22 @@ const Landing = () => {
       </header>
 
       <main>
-        {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto animate-fade-in">
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
                 Your Personal{' '}
-                <span className="text-brand-myrtleGreen">AI Recipe Assistant</span>
+                <span className="text-brand-myrtleGreen bg-gradient-to-r from-brand-myrtleGreen to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
+                  AI Recipe Assistant
+                </span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-gray-600 mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 Transform your cooking experience with personalized recipes based on the ingredients you have.
               </p>
               <div className="flex justify-center space-x-4">
                 <Button
                   onClick={() => navigate('/auth')}
-                  className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
+                  className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 transition-all duration-300 animate-shimmer"
                 >
                   Start Cooking
                 </Button>
@@ -82,11 +83,14 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* Benefits Section */}
         <section className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">
-              Why Choose <span className="text-brand-myrtleGreen">Recipe Generator</span>?
+              Why Choose{' '}
+              <span className="text-brand-myrtleGreen bg-gradient-to-r from-brand-myrtleGreen to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
+                Recipe Generator
+              </span>
+              ?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <BenefitCard
@@ -123,19 +127,21 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="py-20 bg-brand-aquamarine/10">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">
               Ready to Transform Your{' '}
-              <span className="text-brand-myrtleGreen">Cooking Experience</span>?
+              <span className="text-brand-myrtleGreen bg-gradient-to-r from-brand-myrtleGreen to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
+                Cooking Experience
+              </span>
+              ?
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
               Join now and start generating personalized recipes based on your ingredients.
             </p>
             <Button
               onClick={() => navigate('/auth')}
-              className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
+              className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 transition-all duration-300 animate-shimmer"
             >
               Get Started Now
             </Button>
