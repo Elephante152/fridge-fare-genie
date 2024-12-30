@@ -39,7 +39,7 @@ const Header = () => {
 
       <div className="max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen mb-4">
-          Recipe Generator
+          MealPrepGenie v3
         </h1>
         <p className="text-lg text-brand-jet/70 max-w-xl mx-auto">
           Upload photos of your ingredients, and we'll suggest delicious recipes you can make with what you have.

@@ -40,7 +40,7 @@ const Landing = () => {
         <div className="container mx-auto px-6 py-6">
           <nav className="flex justify-between items-center">
             <div className="text-3xl font-bold text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 transition-colors duration-300">
-              Recipe Generator
+              MealPrepGenie v3
             </div>
             <div className="flex items-center space-x-6">
               <Button
