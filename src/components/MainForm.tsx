@@ -48,6 +48,17 @@ const MainForm = () => {
       return;
     }
 
+    // Check if user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to generate recipes.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       // First, analyze the ingredients in the images
@@ -69,6 +80,24 @@ const MainForm = () => {
       
       // Then generate recipes based on the identified ingredients
       const recipes = await generateRecipes(ingredientsData.ingredients, requirements);
+      
+      // Save the generated recipes to the database
+      const { error: saveError } = await supabase
+        .from('recipes')
+        .insert(recipes.map(recipe => ({
+          ...recipe,
+          user_id: user.id,
+        })));
+
+      if (saveError) {
+        console.error('Error saving recipes:', saveError);
+        toast({
+          title: "Error saving recipes",
+          description: "Your recipes were generated but couldn't be saved. Please try again.",
+          variant: "destructive",
+        });
+      }
+
       setRecipes(recipes);
       triggerConfetti();
       setShowResults(true);

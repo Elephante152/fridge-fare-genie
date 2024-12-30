@@ -10,9 +10,13 @@ export const useSavedRecipes = () => {
   const { data: savedRecipes = [], isLoading } = useQuery({
     queryKey: ["savedRecipes"],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
       const { data, error } = await supabase
         .from("saved_recipes")
-        .select("*");
+        .select("*")
+        .eq('user_id', user.id);
 
       if (error) {
         console.error("Error fetching saved recipes:", error);
@@ -25,20 +29,12 @@ export const useSavedRecipes = () => {
 
   const saveRecipe = useMutation({
     mutationFn: async (recipe: Recipe) => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("User not authenticated");
 
       const recipeToSave = {
-        title: recipe.title,
-        description: recipe.description,
-        cooking_time: recipe.cookingTime,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
-        user_id: user.id
+        ...recipe,
+        user_id: user.id,
       };
 
       const { error } = await supabase
@@ -68,10 +64,14 @@ export const useSavedRecipes = () => {
 
   const removeSavedRecipe = useMutation({
     mutationFn: async (recipeId: string) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("User not authenticated");
+
       const { error } = await supabase
         .from("saved_recipes")
         .delete()
-        .eq("id", recipeId);
+        .eq("id", recipeId)
+        .eq("user_id", user.id);
 
       if (error) {
         console.error("Error removing saved recipe:", error);
