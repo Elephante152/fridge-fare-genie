@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { AuthChangeEvent } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -14,19 +14,33 @@ const AuthPage = () => {
   useEffect(() => {
     // Check if user is already authenticated
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session) => {
+      async (event, session) => {
         if (session) {
           navigate("/");
-        }
-        // Handle signup errors through the auth state change event
-        if (event === "SIGNED_IN" && !session) {
-          setError('Invalid login credentials. Please try again.');
         }
       }
     );
 
+    // Set up error handling for auth state
+    const handleAuthError = (error: AuthError) => {
+      setError(error.message);
+    };
+
+    // Subscribe to auth errors
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        setError(null);
+      }
+    });
+
+    // Add error handler
+    const {
+      data: { subscription: errorSubscription },
+    } = supabase.auth.onError(handleAuthError);
+
     return () => {
       subscription.unsubscribe();
+      errorSubscription?.unsubscribe();
     };
   }, [navigate]);
 
