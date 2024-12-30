@@ -23,11 +23,8 @@ const AuthPage = () => {
           });
           navigate("/recipe");
         }
-        if (event === "SIGNED_OUT") {
+        if (event === 'SIGNED_OUT') {
           setError(null);
-        }
-        // Handle authentication errors
-        if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
           navigate('/');
         }
       }
