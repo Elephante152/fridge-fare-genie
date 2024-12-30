@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useSavedRecipes } from '@/hooks/useSavedRecipes';
 import RecipeCard from '@/components/RecipeCard';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const SavedRecipes = () => {
   const { savedRecipes, isLoading } = useSavedRecipes();
@@ -30,15 +32,27 @@ const SavedRecipes = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      <div className="container max-w-4xl py-16 px-4 md:px-6 space-y-12">
-        <header className="text-center">
-          <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen">
-            Saved Recipes
-          </h1>
-          <p className="mt-4 text-lg text-brand-jet/70">
-            Your collection of favorite recipes
-          </p>
-        </header>
+      <div className="container max-w-4xl py-8 md:py-16 px-4 md:px-6 space-y-8 md:space-y-12">
+        <div className="flex flex-col space-y-6">
+          <Link to="/">
+            <Button 
+              variant="ghost" 
+              className="w-fit text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 hover:bg-brand-aquamarine/10"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Generator
+            </Button>
+          </Link>
+          
+          <header className="text-center">
+            <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen">
+              Saved Recipes
+            </h1>
+            <p className="mt-4 text-lg text-brand-jet/70">
+              Your collection of favorite recipes
+            </p>
+          </header>
+        </div>
 
         {savedRecipes.length === 0 ? (
           <motion.div
