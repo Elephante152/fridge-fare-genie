@@ -83,8 +83,8 @@ export default {
         "float": "float 6s ease-in-out infinite",
       },
       fontFamily: {
-        serif: ["Cormorant", "serif"],
-        sans: ["DM Sans", "sans-serif"],
+        serif: ["Playfair Display", "serif"],
+        sans: ["Inter", "sans-serif"],
       },
     },
   },
