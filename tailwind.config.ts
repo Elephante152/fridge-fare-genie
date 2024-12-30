@@ -84,7 +84,7 @@ export default {
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
-        sans: ["Inter", "sans-serif"],
+        sans: ["Bai Jamjuree", "sans-serif"],
       },
     },
   },
