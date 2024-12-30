@@ -95,7 +95,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 900s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Extremely slow (15 minutes) with smooth easing
+        "gradient": "gradient 135000s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Extremely slow (37.5 hours) with smooth easing
       },
       fontFamily: {
         serif: ["Cormorant", "serif"],
