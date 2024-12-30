@@ -14,8 +14,8 @@ const Header = () => {
               <Link
                 to="/recipe"
                 className={cn(
-                  "text-brand-yaleBlue/70 hover:text-brand-cerise transition-colors duration-500",
-                  location.pathname === "/recipe" && "text-brand-cerise font-medium"
+                  "text-brand-turmericOrange/70 hover:text-brand-mustardYellow transition-colors duration-500",
+                  location.pathname === "/recipe" && "text-brand-mustardYellow font-medium"
                 )}
               >
                 Generate
@@ -25,8 +25,8 @@ const Header = () => {
               <Link
                 to="/saved-recipes"
                 className={cn(
-                  "text-brand-yaleBlue/70 hover:text-brand-cerise transition-colors duration-500",
-                  location.pathname === "/saved-recipes" && "text-brand-cerise font-medium"
+                  "text-brand-turmericOrange/70 hover:text-brand-mustardYellow transition-colors duration-500",
+                  location.pathname === "/saved-recipes" && "text-brand-mustardYellow font-medium"
                 )}
               >
                 Saved Recipes
@@ -38,10 +38,10 @@ const Header = () => {
       </div>
 
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-yaleBlue mb-4 bg-gradient-to-r from-brand-yaleBlue to-brand-cerise bg-clip-text text-transparent animate-shimmer">
+        <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-turmericOrange mb-4 bg-gradient-to-r from-brand-turmericOrange to-brand-mustardYellow bg-clip-text text-transparent animate-shimmer">
           MealPrepGenie v3
         </h1>
-        <p className="text-lg text-brand-yaleBlue/70 max-w-xl mx-auto">
+        <p className="text-lg text-brand-turmericOrange/70 max-w-xl mx-auto">
           Upload photos of your ingredients, and we'll suggest delicious recipes you can make with what you have.
         </p>
       </div>

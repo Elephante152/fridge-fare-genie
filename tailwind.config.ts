@@ -46,9 +46,9 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          yaleBlue: "#083D77",
+          turmericOrange: "#F97316",
           beige: "#EBEBD3",
-          cerise: "#DA4167",
+          mustardYellow: "#E3B448",
           naplesYellow: "#F4D35E",
           coral: "#F78764",
         },
@@ -81,11 +81,11 @@ export default {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-        "float": "float 8s ease-in-out infinite",
-        "shimmer": "shimmer 8s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+        "accordion-down": "accordion-down 20s cubic-bezier(0.4, 0, 0.2, 1)",
+        "accordion-up": "accordion-up 20s cubic-bezier(0.4, 0, 0.2, 1)",
+        "fade-in": "fade-in 80s cubic-bezier(0.4, 0, 0.2, 1)",
+        "float": "float 800s ease-in-out infinite",
+        "shimmer": "shimmer 800s cubic-bezier(0.4, 0, 0.2, 1) infinite",
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
