@@ -5,21 +5,30 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const AuthPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if user is already authenticated
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (session) {
-          // Redirect to the main recipe page after successful authentication
+        if (event === 'SIGNED_IN' && session) {
+          toast({
+            title: "Success!",
+            description: "You have successfully signed in.",
+          });
           navigate("/recipe");
         }
         if (event === "SIGNED_OUT") {
           setError(null);
+        }
+        // Handle authentication errors
+        if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
+          navigate('/');
         }
       }
     );
@@ -27,7 +36,7 @@ const AuthPage = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
@@ -61,7 +70,7 @@ const AuthPage = () => {
               },
             }}
             providers={[]}
-            redirectTo={window.location.origin}
+            redirectTo={`${window.location.origin}/recipe`}
             localization={{
               variables: {
                 sign_in: {
@@ -71,6 +80,14 @@ const AuthPage = () => {
                   password_label: "Password",
                   button_label: "Sign in",
                   loading_button_label: "Signing in ...",
+                },
+                sign_up: {
+                  email_input_placeholder: "Your email address",
+                  password_input_placeholder: "Your password",
+                  email_label: "Email",
+                  password_label: "Password",
+                  button_label: "Sign up",
+                  loading_button_label: "Signing up ...",
                 },
               },
             }}
