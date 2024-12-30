@@ -9,6 +9,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Recipe } from '@/types/recipe';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 interface RecipeResultModalProps {
   isOpen: boolean;
@@ -20,12 +23,46 @@ interface RecipeResultModalProps {
 
 const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: RecipeResultModalProps) => {
   const [expandedRecipeIndex, setExpandedRecipeIndex] = useState<number | null>(null);
+  const { toast } = useToast();
 
   const toggleRecipe = (index: number) => {
     setExpandedRecipeIndex(expandedRecipeIndex === index ? null : index);
   };
 
-  // ... keep existing code (JSX until the recipe details section)
+  const handleSaveRecipe = async (recipe: Recipe) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Authentication required",
+          description: "Please sign in to save recipes.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('saved_recipes')
+        .insert([{
+          ...recipe,
+          user_id: user.id
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Recipe saved!",
+        description: "The recipe has been added to your collection.",
+      });
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+      toast({
+        title: "Error saving recipe",
+        description: "Something went wrong while saving the recipe. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -78,20 +115,23 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="border rounded-lg overflow-hidden bg-white/80 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <button
-                    onClick={() => toggleRecipe(index)}
-                    className="w-full p-4 flex justify-between items-center gap-4 text-left hover:bg-brand-yellow/10 transition-colors"
-                  >
-                    <div>
+                  <div className="p-4 flex justify-between items-start gap-4">
+                    <button
+                      onClick={() => toggleRecipe(index)}
+                      className="flex-1 text-left hover:bg-brand-yellow/10 transition-colors rounded-lg p-2"
+                    >
                       <h4 className="font-semibold text-lg font-serif">{recipe.title}</h4>
                       <p className="text-sm text-muted-foreground mt-1">{recipe.description}</p>
-                    </div>
-                    {expandedRecipeIndex === index ? (
-                      <ChevronUp className="w-5 h-5 text-brand-myrtleGreen flex-shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-brand-myrtleGreen flex-shrink-0" />
-                    )}
-                  </button>
+                    </button>
+                    <Button
+                      onClick={() => handleSaveRecipe(recipe)}
+                      variant="secondary"
+                      size="sm"
+                      className="flex-shrink-0"
+                    >
+                      Save Recipe
+                    </Button>
+                  </div>
                   
                   <AnimatePresence>
                     {expandedRecipeIndex === index && (
