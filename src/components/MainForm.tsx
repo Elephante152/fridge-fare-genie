@@ -86,7 +86,7 @@ const MainForm = () => {
 
   return (
     <motion.div 
-      className="space-y-10 bg-[hsl(30,33%,98%)] backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-lg border border-brand-aquamarine/20"
+      className="space-y-10 bg-[hsl(30,33%,98%)] backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-xl border border-brand-aquamarine/20"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
@@ -125,7 +125,7 @@ const MainForm = () => {
       >
         <Button
           onClick={handleGenerate}
-          className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
+          className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
             ${isLoading 
               ? 'bg-brand-myrtleGreen text-white' 
               : 'bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow text-white font-semibold tracking-wide hover:bg-gradient-to-l'
