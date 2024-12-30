@@ -12,10 +12,10 @@ const Header = () => {
           <ul className="flex space-x-6">
             <li>
               <Link
-                to="/"
+                to="/recipe"
                 className={cn(
                   "text-brand-jet/70 hover:text-brand-myrtleGreen transition-colors",
-                  location.pathname === "/" && "text-brand-myrtleGreen font-medium"
+                  location.pathname === "/recipe" && "text-brand-myrtleGreen font-medium"
                 )}
               >
                 Generate
