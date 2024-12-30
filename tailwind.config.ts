@@ -77,6 +77,7 @@ export default {
         },
         shimmer: {
           "0%": { backgroundPosition: "200% 0" },
+          "50%": { backgroundPosition: "0 0" },
           "100%": { backgroundPosition: "-200% 0" },
         },
       },
@@ -85,7 +86,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "shimmer": "shimmer 8s ease-in-out infinite",
+        "shimmer": "shimmer 3s linear infinite",
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],

@@ -36,8 +36,8 @@ const Landing = () => {
       <header className="relative z-10 bg-white bg-opacity-90 backdrop-blur-md border-b">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex justify-between items-center">
-            <div className="text-2xl font-bold text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 transition-colors duration-300">
-              Recipe Generator
+            <div className="text-2xl font-bold bg-gradient-to-r from-brand-myrtleGreen to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
+              MealPrepGenie v3
             </div>
             <div className="flex items-center space-x-4">
               <Button
@@ -49,7 +49,7 @@ const Landing = () => {
               </Button>
               <Button
                 onClick={() => navigate('/auth')}
-                className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 transition-all duration-300 animate-shimmer"
+                className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 transition-all duration-300 bg-[linear-gradient(110deg,#297373,45%,#85FFC7,55%,#297373)] bg-[length:200%_100%] animate-shimmer"
               >
                 Get Started
               </Button>
@@ -64,7 +64,7 @@ const Landing = () => {
             <div className="text-center max-w-3xl mx-auto animate-fade-in">
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">
                 Your Personal{' '}
-                <span className="text-brand-myrtleGreen bg-gradient-to-r from-brand-myrtleGreen to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
+                <span className="bg-[linear-gradient(110deg,#297373,45%,#85FFC7,55%,#297373)] bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer">
                   AI Recipe Assistant
                 </span>
               </h1>
