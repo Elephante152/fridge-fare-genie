@@ -18,29 +18,14 @@ const AuthPage = () => {
         if (session) {
           navigate("/");
         }
+        if (event === "SIGNED_OUT") {
+          setError(null);
+        }
       }
     );
 
-    // Set up error handling for auth state
-    const handleAuthError = (error: AuthError) => {
-      setError(error.message);
-    };
-
-    // Subscribe to auth errors
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        setError(null);
-      }
-    });
-
-    // Add error handler
-    const {
-      data: { subscription: errorSubscription },
-    } = supabase.auth.onError(handleAuthError);
-
     return () => {
       subscription.unsubscribe();
-      errorSubscription?.unsubscribe();
     };
   }, [navigate]);
 
@@ -77,6 +62,9 @@ const AuthPage = () => {
             }}
             providers={[]}
             redirectTo={window.location.origin}
+            onError={(error: AuthError) => {
+              setError(error.message);
+            }}
           />
         </div>
       </div>
