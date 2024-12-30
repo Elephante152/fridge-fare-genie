@@ -77,15 +77,15 @@ export default {
         },
         "gradient": {
           "0%": {
-            "background-size": "400% 400%",
+            "background-size": "800% 800%",
             "background-position": "0% 50%"
           },
           "50%": {
-            "background-size": "400% 400%",
+            "background-size": "800% 800%",
             "background-position": "100% 50%"
           },
           "100%": {
-            "background-size": "400% 400%",
+            "background-size": "800% 800%",
             "background-position": "0% 50%"
           }
         },
@@ -95,7 +95,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "gradient": "gradient 135000s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Extremely slow (37.5 hours) with smooth easing
+        "gradient": "gradient 300000s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Ultra slow (83.3 hours) with smooth easing
       },
       fontFamily: {
         serif: ["Cormorant", "serif"],
