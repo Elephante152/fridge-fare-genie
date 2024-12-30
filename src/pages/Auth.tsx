@@ -13,17 +13,24 @@ const AuthPage = () => {
   useEffect(() => {
     // Check if user is already authenticated
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         if (session) {
           navigate("/");
-        }
-        if (event === 'USER_SIGNUP_ERROR') {
-          setError('This email is already registered. Please sign in instead.');
         }
       }
     );
 
-    return () => subscription.unsubscribe();
+    // Set up error handling for sign-up
+    const handleAuthError = supabase.auth.onError((error) => {
+      if (error.message.includes("already registered")) {
+        setError('This email is already registered. Please sign in instead.');
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      handleAuthError?.unsubscribe();
+    };
   }, [navigate]);
 
   return (
