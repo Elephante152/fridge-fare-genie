@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import SaveRecipeButton from './SaveRecipeButton';
+import { useSavedRecipes } from '@/hooks/useSavedRecipes';
 
 interface Recipe {
   title: string;
@@ -25,24 +27,39 @@ interface RecipeCardProps {
 }
 
 const RecipeCard = ({ recipe, isExpanded, onToggle }: RecipeCardProps) => {
+  const { savedRecipes } = useSavedRecipes();
+  const savedRecipe = savedRecipes.find(
+    (saved) => saved.title === recipe.title && 
+    saved.description === recipe.description
+  );
+
   return (
     <Card className="w-full mb-4 animate-fade-in">
-      <CardHeader className="cursor-pointer" onClick={onToggle}>
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-xl font-serif">{recipe.title}</CardTitle>
-          <Button variant="ghost" size="icon">
-            <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-          </Button>
-        </div>
-        <CardDescription>{recipe.description}</CardDescription>
-        <div className="flex gap-4 text-sm text-muted-foreground mt-2">
-          <div className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            <span>{recipe.cookingTime}</span>
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <div className="flex-1 cursor-pointer" onClick={onToggle}>
+            <CardTitle className="text-xl font-serif">{recipe.title}</CardTitle>
+            <CardDescription>{recipe.description}</CardDescription>
+            <div className="flex gap-4 text-sm text-muted-foreground mt-2">
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                <span>{recipe.cookingTime}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Users className="h-4 w-4" />
+                <span>{recipe.servings} servings</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Users className="h-4 w-4" />
-            <span>{recipe.servings} servings</span>
+          <div className="flex items-center gap-2">
+            <SaveRecipeButton 
+              recipe={recipe}
+              isSaved={!!savedRecipe}
+              savedRecipeId={savedRecipe?.id}
+            />
+            <Button variant="ghost" size="icon" onClick={onToggle}>
+              <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
         </div>
       </CardHeader>
