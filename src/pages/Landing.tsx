@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { supabase } from "@/integrations/supabase/client";
 import { Sparkles, Clock, Cookie, Shield, Utensils, Wand2 } from 'lucide-react';
+import EmojiBackground from '@/components/EmojiBackground';
 
 const BenefitCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => {
   return (
@@ -32,8 +33,10 @@ const Landing = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-radial from-brand-platinum via-white to-brand-platinum">
-      <header className="relative z-10 bg-white bg-opacity-90 backdrop-blur-md border-b border-brand-myrtleGreen/10">
+    <div className="min-h-screen bg-gradient-radial from-brand-platinum via-white to-brand-platinum relative overflow-hidden">
+      <EmojiBackground />
+      
+      <header className="relative z-10 bg-white/95 backdrop-blur-md border-b border-brand-myrtleGreen/10 shadow-sm">
         <div className="container mx-auto px-6 py-6">
           <nav className="flex justify-between items-center">
             <div className="text-3xl font-bold text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 transition-colors duration-300">
@@ -49,7 +52,7 @@ const Landing = () => {
               </Button>
               <Button
                 onClick={() => navigate('/auth')}
-                className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white transition-all duration-300 animate-shimmer"
+                className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white transition-all duration-300 animate-shimmer shadow-lg"
               >
                 Get Started
               </Button>
@@ -58,10 +61,10 @@ const Landing = () => {
         </div>
       </header>
 
-      <main>
+      <main className="relative z-10">
         <section className="relative py-32 overflow-hidden">
           <div className="container mx-auto px-6">
-            <div className="text-center max-w-4xl mx-auto animate-fade-in">
+            <div className="text-center max-w-4xl mx-auto animate-fade-in bg-white/60 backdrop-blur-md rounded-2xl p-12 shadow-xl">
               <h1 className="text-5xl md:text-7xl font-bold mb-8 text-brand-myrtleGreen leading-tight">
                 Your Personal{' '}
                 <span className="bg-gradient-to-r from-brand-myrtleGreen via-brand-yellow to-brand-aquamarine bg-clip-text text-transparent animate-shimmer">
@@ -73,7 +76,7 @@ const Landing = () => {
               </p>
               <Button
                 onClick={() => navigate('/auth')}
-                className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer"
+                className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer shadow-lg"
               >
                 Start Cooking
               </Button>
@@ -139,7 +142,7 @@ const Landing = () => {
             </p>
             <Button
               onClick={() => navigate('/auth')}
-              className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer"
+              className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer shadow-lg"
             >
               Get Started Now
             </Button>
@@ -147,7 +150,7 @@ const Landing = () => {
         </section>
       </main>
 
-      <footer className="bg-white border-t py-12">
+      <footer className="bg-white border-t py-12 relative z-10">
         <div className="container mx-auto px-6 text-center text-gray-600">
           <p>&copy; {new Date().getFullYear()} Recipe Generator. All rights reserved.</p>
         </div>
