@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import AuthPage from "./pages/Auth";
+import SavedRecipes from "./pages/SavedRecipes";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Create a client
@@ -29,6 +30,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/saved-recipes"
+              element={
+                <ProtectedRoute>
+                  <SavedRecipes />
                 </ProtectedRoute>
               }
             />

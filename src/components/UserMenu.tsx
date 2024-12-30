@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { User2 } from "lucide-react";
+import { LogOut, User2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 export function UserMenu() {
@@ -34,8 +34,9 @@ export function UserMenu() {
           <User2 className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={handleSignOut}>
+      <DropdownMenuContent align="end" className="w-40">
+        <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+          <LogOut className="h-4 w-4 mr-2" />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
