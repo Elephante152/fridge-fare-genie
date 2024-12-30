@@ -27,7 +27,8 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-4-vision-preview',
+        max_tokens: 1000,
         messages: [
           {
             role: 'system',
@@ -57,7 +58,7 @@ serve(async (req) => {
     })
 
     const data = await response.json()
-    console.log('OpenAI Response:', data)
+    console.log('OpenAI Raw Response:', data);
 
     if (!response.ok) {
       throw new Error(data.error?.message || 'Failed to analyze images')
@@ -67,12 +68,22 @@ serve(async (req) => {
     let ingredients
     try {
       const content = data.choices[0].message.content
+      console.log('Raw content from OpenAI:', content);
+      
       // Remove any markdown code block formatting if present
-      const cleanContent = content.replace(/```json\n|\n```/g, '').trim()
+      const cleanContent = content.replace(/```json\n|\n```|```/g, '').trim()
+      console.log('Cleaned content:', cleanContent);
+      
       ingredients = JSON.parse(cleanContent)
+      
+      if (!Array.isArray(ingredients)) {
+        throw new Error('OpenAI response is not an array')
+      }
+      
+      console.log('Parsed ingredients:', ingredients);
     } catch (error) {
       console.error('Error parsing ingredients:', error)
-      throw new Error('Failed to parse ingredients from response')
+      throw new Error(`Failed to parse ingredients from response: ${error.message}`)
     }
     
     return new Response(
@@ -82,8 +93,14 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack 
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
+        status: 500 
+      }
     )
   }
 })
