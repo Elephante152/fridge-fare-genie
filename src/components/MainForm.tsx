@@ -84,7 +84,7 @@ const MainForm = () => {
       // Transform the recipes to match the database schema
       const recipesToSave = generatedRecipes.map(recipe => ({
         ...recipe,
-        cooking_time: recipe.cookingTime || '30 minutes', // Provide a default value
+        cooking_time: recipe.cooking_time || '30 minutes', // Use cooking_time directly
         user_id: user.id,
       }));
 

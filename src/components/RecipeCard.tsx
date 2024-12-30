@@ -10,15 +10,7 @@ import {
 } from '@/components/ui/card';
 import SaveRecipeButton from './SaveRecipeButton';
 import { useSavedRecipes } from '@/hooks/useSavedRecipes';
-
-interface Recipe {
-  title: string;
-  description: string;
-  cookingTime: string;
-  servings: number;
-  ingredients: string[];
-  instructions: string[];
-}
+import type { Recipe } from '@/types/recipe';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -43,7 +35,7 @@ const RecipeCard = ({ recipe, isExpanded, onToggle }: RecipeCardProps) => {
             <div className="flex gap-4 text-sm text-muted-foreground mt-2">
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
-                <span>{recipe.cookingTime}</span>
+                <span>{recipe.cooking_time}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />

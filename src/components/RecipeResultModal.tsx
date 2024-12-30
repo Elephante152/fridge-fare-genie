@@ -25,6 +25,8 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
     setExpandedRecipeIndex(expandedRecipeIndex === index ? null : index);
   };
 
+  // ... keep existing code (JSX until the recipe details section)
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[80vh] p-0 gap-0 bg-white/95 backdrop-blur-sm">
@@ -151,8 +153,8 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: 0.2 }}
                           >
-                            {recipe.cookingTime && (
-                              <span>🕒 {recipe.cookingTime}</span>
+                            {recipe.cooking_time && (
+                              <span>🕒 {recipe.cooking_time}</span>
                             )}
                             {recipe.servings && (
                               <span>👥 Serves {recipe.servings}</span>
