@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { AuthError } from "@supabase/supabase-js";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -16,7 +15,8 @@ const AuthPage = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session) {
-          navigate("/");
+          // Redirect to the main recipe page after successful authentication
+          navigate("/recipe");
         }
         if (event === "SIGNED_OUT") {
           setError(null);
@@ -37,7 +37,7 @@ const AuthPage = () => {
             Welcome to Recipe Generator
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to save and manage your favorite recipes
+            Sign in to start generating personalized recipes
           </p>
         </div>
         {error && (
