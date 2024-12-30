@@ -1,53 +1,122 @@
-**Use your preferred IDE**
+# MealPrepGenie: A Full-Stack AI-Powered Meal Planning Service
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This repository showcases a **full-stack** meal planning application called **MealPrepGenie**, which leverages **Supabase** for authentication, **OpenAI** for generating meal plans, and a credit-based system that will integrate with **Stripe** for credit purchases.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Overview
 
-Follow these steps:
+MealPrepGenie allows users to:
+- **Sign up** or **sign in** (using Supabase as an auth provider).
+- Generate **AI-powered** meal plans tailored to their dietary preferences.
+- Purchase or add credits (in progress) to generate more meal plans.
+- **Save favorite generations** for later reference (demonstrating CRUD).
+- Enjoy an elegant **React** front end with **Tailwind CSS** styling.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Initially, the project attempted to integrate a custom OAuth flow via **clientID** console API. However, **issues** arose around configuration and authorization logic. As a result, the decision was made to **revise the approach** and rely exclusively on **Supabase** for OAuth and session management. This new approach **simplified** the setup, fixed previous configuration errors, and got the **authentication** fully functional.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Also, a **new OpenAI API key** was used, which resolved prior errors with the GPT integration. With these adjustments, **MealPrepGenie** is now able to authenticate users successfully and also store user-generated meal plans or “favorite” content in Supabase tables.
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Current Features
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+1. **Supabase Authentication**  
+   - Supabase’s built-in OAuth (e.g., Google, GitHub, etc.) manages user sessions.
+   - No manual `clientID` console integration needed.  
+   - Simplified environment with less overhead and fewer external dependencies.
 
-**Edit a file directly in GitHub**
+2. **Meal Plan Generation**  
+   - Uses an **OpenAI API** (GPT) to provide meal plans based on user preferences.
+   - Credit-based approach to manage how many plans can be generated.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. **Favorite Plans**  
+   - Authenticated users can **save** their AI-generated meal plans, demonstrating the ability to **create** and **retrieve** data from the Supabase backend.
 
-**Use GitHub Codespaces**
+4. **Credit System** (in progress)  
+   - Basic logic to **track** credit usage for each user.  
+   - Future improvement: **Stripe integration** to purchase more credits when needed.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+5. **UI and Navigation**  
+   - **React + Vite** front end, using **Tailwind CSS**.  
+   - **Landing page** flow for public users.  
+   - **Dashboard** for authenticated interactions (generations, credit purchase, saving favorites).  
+   - **Profile** and **Settings** pages for further user customization.
 
-## What technologies are used for this project?
+## Project Status
 
-This project is built with .
+- **Capstone Requirements**: The app demonstrates a **complete** full-stack example with:
+  - Frontend  
+  - Supabase-based authentication & database  
+  - OpenAI integration  
+  - Basic CRUD  
+- **Ongoing Work**:
+  - Fine-tuning credit tracking logic for OpenAI calls.  
+  - Building out the **Stripe** integration for credit purchases.  
+  - Enhancing the UI/UX and performance optimizations.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Tech Stack
 
-## How can I deploy this project?
+- **React** (Vite)  
+- **Tailwind CSS**  
+- **Supabase** (Auth, Database, RPC Functions)  
+- **OpenAI GPT** (AI-generated meal plans)  
+- **Stripe** (planned integration for payments)  
 
-Simply open [Lovable](https://lovable.dev/projects/daa29a4c-7d38-4d9c-8a9f-7b58de000f2d) and click on Share -> Publish.
+## Setup & Usage
 
-## I want to use a custom domain - is that possible?
+1. **Clone this repository**:
+   ```bash
+   git clone https://github.com/yourusername/meal-prep-genie.git
+   cd meal-prep-genie
+   ```
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+2. **Install dependencies**:
+   ```bash
+   npm install
+   # or yarn install
+   ```
+
+3. **Configure environment**:
+   - Copy `.env.example` to `.env`.
+   - Fill in `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, etc.
+   - Provide `VITE_OPENAI_API_KEY`.
+   - Provide `VITE_STRIPE_PUBLIC_KEY` if testing (optional for now).
+
+4. **Run development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Visit**:
+   - Open your browser to [http://localhost:8080](http://localhost:8080).
+
+6. **Build for production**:
+   ```bash
+   npm run build
+   ```
+
+7. **Preview production build**:
+   ```bash
+   npm run preview
+   ```
+
+## Credits & Acknowledgments
+
+- **Supabase** for seamless Auth + Database as a Service.
+- **OpenAI** GPT-4 for meal plan generation.
+- **Stripe** (to be integrated) for payment and credit purchase.
+- **Tailwind** for rapid UI styling.
+- **React** & **Vite** for the frontend environment.
+- **AI Tools**  
+  - Leaned heavily on **Lovable Dev** / **ChatGPT** and **Claude** for debugging and constructing a robust backend.  
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change or improve.
+
+## License
+
+This project is open-source. Use it freely, but **no warranties** are provided.
+
+---
+
+**Thanks for checking out MealPrepGenie!** This project is part of a larger goal to demonstrate a “**full-stack**” AI-based meal-planning solution. There is ongoing work to polish the **credit system** and incorporate **Stripe**. Please feel free to explore the code, provide feedback, and open issues for any suggestions or improvements. 
+
+Happy Coding!
