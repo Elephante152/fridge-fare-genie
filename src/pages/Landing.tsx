@@ -89,18 +89,58 @@ const StepCard = ({ number, title, description, delay = 0 }: StepCardProps) => {
 
 const SignUpFlow = () => {
   const navigate = useNavigate();
-  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsDialogOpen(false);
+      setIsSubmitted(false);
+      navigate('/auth');
+    }, 1000);
+  };
+
   return (
-    <Button 
-      className="bg-brand-myrtleGreen text-white hover:bg-brand-myrtleGreen/90"
-      onClick={() => navigate('/auth')}
-    >
-      Get Started <ArrowRight className="ml-2 w-4 h-4" />
-    </Button>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-emerald-500 text-white hover:bg-emerald-600">
+          Get Started <ArrowRight className="ml-2 w-4 h-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Sign Up</DialogTitle>
+          <DialogDescription>
+            Create an account to get started with FridgeFareGenie.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" required />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" required />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="submit" className="w-full">
+              {isSubmitted ? 'Submitting...' : 'Sign Up'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <header className="relative z-10 bg-white bg-opacity-90 backdrop-blur-md border-b">
@@ -134,6 +174,12 @@ export default function LandingPage() {
               </p>
               <div className="flex justify-center space-x-4">
                 <SignUpFlow />
+                <Button 
+                  variant="outline"
+                  onClick={() => navigate('/auth')}
+                >
+                  Try Demo <ChevronRight className="ml-2 w-4 h-4" />
+                </Button>
               </div>
             </div>
           </div>
@@ -210,7 +256,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-brand-aquamarine/10">
+        <section className="py-20 bg-emerald-50">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">
               Ready to Transform Your
@@ -226,7 +272,40 @@ export default function LandingPage() {
 
       <footer className="bg-white border-t py-12">
         <div className="container mx-auto px-4">
-          <div className="text-center text-gray-600">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <Link to="/" className="flex items-center space-x-2">
+                <AnimatedGradientText text="FridgeFareGenie" className="text-xl font-bold" />
+              </Link>
+              <p className="text-gray-600 mt-4">
+                Your personal AI recipe assistant.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Features</Link></li>
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Pricing</Link></li>
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Demo</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Company</h3>
+              <ul className="space-y-2">
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">About</Link></li>
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Blog</Link></li>
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Careers</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2">
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Privacy</Link></li>
+                <li><Link to="/auth" className="text-gray-600 hover:text-gray-900">Terms</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-12 pt-8 border-t text-center text-gray-600">
             <p>&copy; {new Date().getFullYear()} FridgeFareGenie. All rights reserved.</p>
           </div>
         </div>
