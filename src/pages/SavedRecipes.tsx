@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSavedRecipes } from '@/hooks/useSavedRecipes';
 import RecipeCard from '@/components/RecipeCard';
 import { Loader2 } from 'lucide-react';
@@ -6,6 +6,19 @@ import { motion } from 'framer-motion';
 
 const SavedRecipes = () => {
   const { savedRecipes, isLoading } = useSavedRecipes();
+  const [expandedRecipeIds, setExpandedRecipeIds] = useState<Set<string>>(new Set());
+
+  const toggleRecipe = (recipeId: string) => {
+    setExpandedRecipeIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(recipeId)) {
+        newSet.delete(recipeId);
+      } else {
+        newSet.add(recipeId);
+      }
+      return newSet;
+    });
+  };
 
   if (isLoading) {
     return (
@@ -41,10 +54,15 @@ const SavedRecipes = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 gap-6"
           >
             {savedRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <RecipeCard 
+                key={recipe.id} 
+                recipe={recipe}
+                isExpanded={expandedRecipeIds.has(recipe.id || '')}
+                onToggle={() => toggleRecipe(recipe.id || '')}
+              />
             ))}
           </motion.div>
         )}
