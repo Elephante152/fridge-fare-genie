@@ -17,19 +17,15 @@ const AuthPage = () => {
         if (session) {
           navigate("/");
         }
+        // Handle signup errors through the auth state change event
+        if (event === 'USER_SIGNUP' && !session) {
+          setError('This email is already registered. Please sign in instead.');
+        }
       }
     );
 
-    // Set up error handling for sign-up
-    const handleAuthError = supabase.auth.onError((error) => {
-      if (error.message.includes("already registered")) {
-        setError('This email is already registered. Please sign in instead.');
-      }
-    });
-
     return () => {
       subscription.unsubscribe();
-      handleAuthError?.unsubscribe();
     };
   }, [navigate]);
 
