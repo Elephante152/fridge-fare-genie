@@ -1,20 +1,18 @@
-import { motion } from 'framer-motion';
+import { UserMenu } from "./UserMenu";
 
 const Header = () => {
   return (
-    <motion.div 
-      className="space-y-4 text-center"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow bg-clip-text text-transparent animate-gradient">
-        Recipe Genie
+    <header className="text-center relative">
+      <div className="absolute right-0 top-0">
+        <UserMenu />
+      </div>
+      <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen">
+        Recipe Generator
       </h1>
-      <p className="text-brand-jet/80 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
-        Transform your ingredients into culinary masterpieces with AI-powered recipe suggestions
+      <p className="mt-4 text-lg text-brand-jet/70 max-w-xl mx-auto">
+        Upload photos of your ingredients, and we'll suggest delicious recipes you can make with what you have.
       </p>
-    </motion.div>
+    </header>
   );
 };
 
