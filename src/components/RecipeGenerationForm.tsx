@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ImageUpload from '@/components/ImageUpload';
 import { useToast } from '@/components/ui/use-toast';
+import AnimatedPlaceholder from './AnimatedPlaceholder';
 
 interface RecipeGenerationFormProps {
   onGenerate: (images: string[], requirements: string) => Promise<void>;
@@ -88,14 +89,15 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
                 ? "Describe your ingredients and any dietary preferences, restrictions, or specific requirements."
                 : "Add any dietary preferences, restrictions, or specific requirements you have in mind."}
             </p>
-            <Textarea
-              placeholder={uploadedImages.length === 0 
-                ? "E.g., I have chicken, rice, and vegetables. Looking for gluten-free recipes under 30 minutes..."
-                : "E.g., vegetarian, gluten-free, quick meals under 30 minutes..."}
-              value={requirements}
-              onChange={(e) => setRequirements(e.target.value)}
-              className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-brand-aquamarine/20 focus:border-brand-myrtleGreen focus:ring-brand-myrtleGreen/20 transition-colors"
-            />
+            <div className="space-y-2">
+              <Textarea
+                placeholder=" "
+                value={requirements}
+                onChange={(e) => setRequirements(e.target.value)}
+                className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-brand-aquamarine/20 focus:border-brand-myrtleGreen focus:ring-brand-myrtleGreen/20 transition-colors"
+              />
+              <AnimatedPlaceholder className="ml-2" />
+            </div>
           </div>
         </div>
       </div>
