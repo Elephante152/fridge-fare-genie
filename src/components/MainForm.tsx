@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import RecipeResultModal from '@/components/RecipeResultModal';
+import ProcessingStagesModal from '@/components/ProcessingStagesModal';
 import { triggerConfetti } from '@/utils/confetti';
 import { generateRecipes } from '@/services/openai';
 import type { Recipe } from '@/types/recipe';
@@ -11,6 +12,7 @@ const MainForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [showProcessing, setShowProcessing] = useState(false);
   const [currentRequirements, setCurrentRequirements] = useState('');
   const [currentImages, setCurrentImages] = useState<string[]>([]);
   const { toast } = useToast();
@@ -28,6 +30,8 @@ const MainForm = () => {
     }
 
     setIsLoading(true);
+    setShowProcessing(true);
+
     try {
       let ingredientsData = { ingredients: [] };
       
@@ -68,8 +72,6 @@ const MainForm = () => {
       setRecipes(recipesToSave);
       setCurrentRequirements(requirements);
       setCurrentImages(images);
-      triggerConfetti();
-      setShowResults(true);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -77,9 +79,16 @@ const MainForm = () => {
         description: "Something went wrong while generating your recipes. Please try again.",
         variant: "destructive",
       });
+      setShowProcessing(false);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleProcessingComplete = () => {
+    setShowProcessing(false);
+    triggerConfetti();
+    setShowResults(true);
   };
 
   return (
@@ -87,6 +96,10 @@ const MainForm = () => {
       <RecipeGenerationForm 
         onGenerate={handleGenerate}
         isLoading={isLoading}
+      />
+      <ProcessingStagesModal
+        isOpen={showProcessing}
+        onComplete={handleProcessingComplete}
       />
       <RecipeResultModal
         isOpen={showResults}
