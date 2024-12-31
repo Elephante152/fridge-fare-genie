@@ -84,13 +84,16 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
             <h2 className="text-2xl font-serif text-brand-myrtleGreen">
               Additional Requirements
             </h2>
+            <div className="text-brand-jet/70 text-base leading-relaxed">
+              <AnimatedPlaceholder className="relative h-6 !inset-auto" />
+            </div>
             <div className="relative">
               <Textarea
                 value={requirements}
                 onChange={(e) => setRequirements(e.target.value)}
                 className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-brand-aquamarine/20 focus:border-brand-myrtleGreen focus:ring-brand-myrtleGreen/20 transition-colors"
+                placeholder="Enter your requirements here..."
               />
-              {!requirements && <AnimatedPlaceholder />}
             </div>
           </div>
         </div>
