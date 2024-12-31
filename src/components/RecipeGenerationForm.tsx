@@ -84,11 +84,6 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
             <h2 className="text-2xl font-serif text-brand-myrtleGreen">
               Additional Requirements
             </h2>
-            <p className="text-brand-jet/70 text-base leading-relaxed">
-              {uploadedImages.length === 0 
-                ? "Describe your ingredients and any dietary preferences, restrictions, or specific requirements."
-                : "Add any dietary preferences, restrictions, or specific requirements you have in mind."}
-            </p>
             <div className="relative">
               <Textarea
                 value={requirements}
