@@ -47,6 +47,10 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
     }
 
     await onGenerate(uploadedImages, requirements);
+    // Clear the requirements textarea after successful generation
+    setRequirements('');
+    // Also clear the uploaded images
+    setUploadedImages([]);
   };
 
   return (
