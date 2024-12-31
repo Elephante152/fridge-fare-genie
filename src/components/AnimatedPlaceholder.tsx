@@ -67,7 +67,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
   }, [currentIndex, isTyping]);
 
   return (
-    <div className={`${className}`}>
+    <div className={`relative min-h-[3rem] sm:min-h-[2rem] mb-2 ${className}`}>
       <AnimatePresence mode="wait">
         <motion.span
           key={currentIndex}
@@ -75,7 +75,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.125 }}
-          className="flex items-center text-muted-foreground text-sm pointer-events-none"
+          className="absolute inset-0 flex items-center text-muted-foreground text-sm pointer-events-none break-words whitespace-pre-wrap px-1"
         >
           {displayText}
           <motion.span
