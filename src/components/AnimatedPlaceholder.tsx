@@ -29,32 +29,30 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         setDisplayText(currentText.substring(0, currentChar + 1));
         currentChar++;
       } else if (currentChar >= currentText.length) {
-        // Longer pause at the end of typing
         pauseTimeout = setTimeout(() => {
           setIsTyping(false);
-          // Start erasing
           currentChar = currentText.length;
-          typingInterval = setInterval(eraseChar, 50); // Slightly slower erasing
-        }, 3000); // Longer pause at the end (3 seconds)
+          eraseText();
+        }, 2000); // 2 second pause at the end
       }
     };
 
-    const eraseChar = () => {
-      if (currentChar > 0) {
-        setDisplayText(currentText.substring(0, currentChar - 1));
-        currentChar--;
-      } else {
-        clearInterval(typingInterval);
-        // Add a small pause before starting the next example
-        setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % examples.length);
-          setIsTyping(true);
-        }, 1000); // 1 second pause before next example
-      }
+    const eraseText = () => {
+      typingInterval = setInterval(() => {
+        if (currentChar > 0) {
+          setDisplayText(currentText.substring(0, currentChar - 1));
+          currentChar--;
+        } else {
+          clearInterval(typingInterval);
+          setTimeout(() => {
+            setCurrentIndex((prev) => (prev + 1) % examples.length);
+            setIsTyping(true);
+          }, 1000); // 1 second pause before next example
+        }
+      }, 100); // Consistent erasing speed
     };
 
-    // Slower typing speed (70ms between characters)
-    typingInterval = setInterval(typeNextChar, 70);
+    typingInterval = setInterval(typeNextChar, 100); // Consistent typing speed
 
     return () => {
       clearInterval(typingInterval);
@@ -63,21 +61,21 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
   }, [currentIndex, isTyping]);
 
   return (
-    <div className={`relative h-[24px] ${className}`}>
+    <div className={`absolute inset-0 ${className}`}>
       <AnimatePresence mode="wait">
         <motion.span
           key={currentIndex}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }} // Smoother fade transition
-          className="absolute text-brand-jet/50 text-sm"
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 flex items-center px-3 py-2 text-muted-foreground text-sm pointer-events-none"
         >
           {displayText}
           <motion.span
             animate={{ opacity: [0, 1, 0] }}
             transition={{ duration: 0.8, repeat: Infinity }}
-            className="inline-block w-[2px] h-[14px] bg-brand-jet/50 ml-[2px]"
+            className="inline-block w-[2px] h-[14px] bg-muted-foreground/50 ml-[2px]"
           >
             |
           </motion.span>
