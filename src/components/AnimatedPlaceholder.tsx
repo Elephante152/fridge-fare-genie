@@ -37,7 +37,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         pauseTimeout = setTimeout(() => {
           setIsTyping(false);
           eraseText();
-        }, 2000);
+        }, 500); // Reduced from 2000ms to 500ms (75% faster)
       }
     };
 
@@ -51,15 +51,15 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
           setTimeout(() => {
             setCurrentIndex((prev) => (prev + 1) % examples.length);
             setIsTyping(true);
-          }, 1000);
+          }, 250); // Reduced from 1000ms to 250ms (75% faster)
         }
-      }, 100);
+      }, 25); // Reduced from 100ms to 25ms (75% faster)
 
       return () => clearInterval(eraseInterval);
     };
 
-    // Start typing animation
-    typingInterval = setInterval(typeNextChar, 100);
+    // Start typing animation with increased speed
+    typingInterval = setInterval(typeNextChar, 25); // Reduced from 100ms to 25ms (75% faster)
 
     // Cleanup function
     return () => {
@@ -76,13 +76,13 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.125 }} // Reduced from 0.5s to 0.125s (75% faster)
           className="absolute inset-0 flex items-center px-3 py-2 text-muted-foreground text-sm pointer-events-none"
         >
           {displayText}
           <motion.span
             animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
+            transition={{ duration: 0.2, repeat: Infinity }} // Reduced from 0.8s to 0.2s (75% faster)
             className="inline-block w-[2px] h-[14px] bg-muted-foreground/50 ml-[2px]"
           >
             |
