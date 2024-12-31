@@ -93,8 +93,8 @@ export default {
         "scale-up": "scale-up 0.2s ease-out",
       },
       fontFamily: {
-        serif: ["Playfair Display", "serif"],
-        sans: ["Bai Jamjuree", "sans-serif"],
+        serif: ["Montserrat", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
