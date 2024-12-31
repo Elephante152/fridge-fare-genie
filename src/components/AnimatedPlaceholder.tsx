@@ -20,6 +20,14 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
+    const textArea = document.querySelector('textarea');
+    
+    // Stop animation if textarea has content
+    if (textArea && textArea.value.length > 0) {
+      setIsActive(false);
+      return;
+    }
+
     if (!isActive) {
       setDisplayText("");
       return;
@@ -71,10 +79,19 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
     typingInterval = setInterval(typeNextChar, 25);
 
     const handleFocus = () => setIsActive(false);
-    const textArea = document.querySelector('textarea');
+    const handleInput = (e: Event) => {
+      const target = e.target as HTMLTextAreaElement;
+      if (target.value.length > 0) {
+        setIsActive(false);
+      } else {
+        setIsActive(true);
+      }
+    };
+
     if (textArea) {
       textArea.addEventListener('focus', handleFocus);
       textArea.addEventListener('click', handleFocus);
+      textArea.addEventListener('input', handleInput);
     }
 
     return () => {
@@ -83,6 +100,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
       if (textArea) {
         textArea.removeEventListener('focus', handleFocus);
         textArea.removeEventListener('click', handleFocus);
+        textArea.removeEventListener('input', handleInput);
       }
     };
   }, [currentIndex, isTyping, isActive]);
