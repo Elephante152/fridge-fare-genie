@@ -36,10 +36,11 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
   };
 
   const handleSubmit = async () => {
-    if (uploadedImages.length === 0) {
+    // Check if both fields are empty
+    if (uploadedImages.length === 0 && !requirements.trim()) {
       toast({
-        title: "No images uploaded",
-        description: "Please upload at least one image of your ingredients first.",
+        title: "No input provided",
+        description: "Please either upload images of your ingredients or describe your requirements.",
         variant: "destructive",
       });
       return;
@@ -60,10 +61,11 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
           <span className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-myrtleGreen text-white font-semibold">1</span>
           <div className="space-y-4 flex-1">
             <h2 className="text-2xl font-serif text-brand-myrtleGreen">
-              Capture Your Ingredients
+              Capture Your Ingredients (Optional)
             </h2>
             <p className="text-brand-jet/70 text-base leading-relaxed">
               Take a clear photo of your ingredients laid out on a clean surface, or upload an image of your grocery haul.
+              You can skip this step if you prefer to describe your ingredients in text below.
             </p>
             <ImageUpload 
               onImageUpload={handleImageUpload}
@@ -82,10 +84,14 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
               Additional Requirements
             </h2>
             <p className="text-brand-jet/70 text-base leading-relaxed">
-              Add any dietary preferences, restrictions, or specific requirements you have in mind.
+              {uploadedImages.length === 0 
+                ? "Describe your ingredients and any dietary preferences, restrictions, or specific requirements."
+                : "Add any dietary preferences, restrictions, or specific requirements you have in mind."}
             </p>
             <Textarea
-              placeholder="E.g., vegetarian, gluten-free, quick meals under 30 minutes..."
+              placeholder={uploadedImages.length === 0 
+                ? "E.g., I have chicken, rice, and vegetables. Looking for gluten-free recipes under 30 minutes..."
+                : "E.g., vegetarian, gluten-free, quick meals under 30 minutes..."}
               value={requirements}
               onChange={(e) => setRequirements(e.target.value)}
               className="min-h-[120px] resize-none bg-white/50 backdrop-blur-sm border-brand-aquamarine/20 focus:border-brand-myrtleGreen focus:ring-brand-myrtleGreen/20 transition-colors"
@@ -102,7 +108,7 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
               Generate Your Recipes
             </h2>
             <p className="text-brand-jet/70 text-base leading-relaxed">
-              Click the button below to get personalized recipe suggestions based on your ingredients and requirements.
+              Click the button below to get personalized recipe suggestions based on your input.
             </p>
             <motion.div
               whileHover={{ scale: 1.02 }}
@@ -120,7 +126,7 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Analyzing ingredients...
+                    Analyzing input...
                   </>
                 ) : (
                   'Generate Recipes'

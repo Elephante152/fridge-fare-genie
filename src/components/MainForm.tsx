@@ -29,24 +29,29 @@ const MainForm = () => {
 
     setIsLoading(true);
     try {
-      // First, analyze the ingredients in the images
-      const { data: ingredientsData, error: ingredientsError } = await supabase.functions.invoke(
-        'analyze-ingredients',
-        {
-          body: { 
-            images,
-            requirements
-          }
-        }
-      );
-
-      if (ingredientsError) {
-        throw new Error('Failed to analyze ingredients');
-      }
-
-      console.log('Identified ingredients:', ingredientsData.ingredients);
+      let ingredientsData = { ingredients: [] };
       
-      // Then generate recipes based on the identified ingredients
+      // Only analyze images if they are provided
+      if (images.length > 0) {
+        const { data, error: ingredientsError } = await supabase.functions.invoke(
+          'analyze-ingredients',
+          {
+            body: { 
+              images,
+              requirements
+            }
+          }
+        );
+
+        if (ingredientsError) {
+          throw new Error('Failed to analyze ingredients');
+        }
+        
+        ingredientsData = data;
+        console.log('Identified ingredients:', ingredientsData.ingredients);
+      }
+      
+      // Generate recipes based on the identified ingredients and/or requirements
       const generatedRecipes = await generateRecipes(ingredientsData.ingredients, requirements);
       
       // Transform the recipes to match the database schema
