@@ -38,7 +38,7 @@ const Header = () => {
       </div>
 
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen mb-4">
+        <h1 className="text-4xl md:text-5xl font-serif font-medium bg-clip-text text-transparent animate-gradient-x bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow bg-[length:200%_100%] mb-4">
           MealPrepGenie v3
         </h1>
         <p className="text-lg text-brand-jet/70 max-w-xl mx-auto">

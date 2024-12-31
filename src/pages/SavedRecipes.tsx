@@ -45,7 +45,7 @@ const SavedRecipes = () => {
           </Link>
           
           <header className="text-center">
-            <h1 className="text-4xl md:text-5xl font-serif font-medium text-brand-myrtleGreen">
+            <h1 className="text-4xl md:text-5xl font-serif font-medium bg-clip-text text-transparent animate-gradient-x bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow bg-[length:200%_100%]">
               Saved Recipes
             </h1>
             <p className="mt-4 text-lg text-brand-jet/70">
