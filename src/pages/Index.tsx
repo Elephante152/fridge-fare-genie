@@ -9,7 +9,7 @@ const Index = () => {
       <EmojiBackground />
       
       <div className="container max-w-4xl px-4 md:px-6 relative z-10">
-        <div className="py-8 md:py-12 mb-8">
+        <div className="py-6 md:py-8 mb-4">
           <Header />
         </div>
         

@@ -6,7 +6,7 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="text-center relative space-y-8">
+    <header className="text-center relative space-y-6">
       <div className="flex justify-between items-start">
         <nav>
           <ul className="flex space-x-6">
@@ -42,7 +42,7 @@ const Header = () => {
           MealPrepGenie v3
         </h1>
         <p className="text-lg text-brand-jet/70 max-w-xl mx-auto">
-          Upload photos of your ingredients, and we'll suggest delicious recipes you can make with what you have.
+          Getting delicious recipe suggestions is as easy as 1-2-3!
         </p>
       </div>
     </header>
