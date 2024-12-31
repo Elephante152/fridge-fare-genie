@@ -124,10 +124,7 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
               >
                 <span className="relative z-10">
                   {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Analyzing input...
-                    </>
+                    <span className="opacity-0">Generate Recipes</span>
                   ) : (
                     'Generate Recipes'
                   )}

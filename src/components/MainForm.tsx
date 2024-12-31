@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import RecipeResultModal from '@/components/RecipeResultModal';
 import { triggerConfetti } from '@/utils/confetti';
@@ -6,14 +6,36 @@ import { generateRecipes } from '@/services/openai';
 import type { Recipe } from '@/types/recipe';
 import { supabase } from '@/integrations/supabase/client';
 import RecipeGenerationForm from './RecipeGenerationForm';
+import ButtonStages from './ButtonStages';
 
 const MainForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [currentStage, setCurrentStage] = useState(-1);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [currentRequirements, setCurrentRequirements] = useState('');
   const [currentImages, setCurrentImages] = useState<string[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isLoading) {
+      // Start the stage animation sequence
+      setCurrentStage(0);
+      timeout = setTimeout(() => {
+        setCurrentStage(1);
+        timeout = setTimeout(() => {
+          setCurrentStage(2);
+          timeout = setTimeout(() => {
+            setCurrentStage(3);
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    } else {
+      setCurrentStage(-1);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const handleGenerate = async (images: string[], requirements: string) => {
     // Check if user is authenticated
@@ -65,11 +87,15 @@ const MainForm = () => {
         user_id: user.id,
       }));
 
-      setRecipes(recipesToSave);
-      setCurrentRequirements(requirements);
-      setCurrentImages(images);
-      triggerConfetti();
-      setShowResults(true);
+      // Add a slight delay before showing results for better UX
+      setTimeout(() => {
+        setRecipes(recipesToSave);
+        setCurrentRequirements(requirements);
+        setCurrentImages(images);
+        triggerConfetti();
+        setShowResults(true);
+        setIsLoading(false);
+      }, 1000);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -77,17 +103,19 @@ const MainForm = () => {
         description: "Something went wrong while generating your recipes. Please try again.",
         variant: "destructive",
       });
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <>
-      <RecipeGenerationForm 
-        onGenerate={handleGenerate}
-        isLoading={isLoading}
-      />
+      <div className="space-y-4">
+        <ButtonStages currentStage={currentStage} />
+        <RecipeGenerationForm 
+          onGenerate={handleGenerate}
+          isLoading={isLoading}
+        />
+      </div>
       <RecipeResultModal
         isOpen={showResults}
         onClose={() => setShowResults(false)}
