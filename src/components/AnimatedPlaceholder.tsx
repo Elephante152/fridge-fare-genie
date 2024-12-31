@@ -17,29 +17,15 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
-  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
-    const textArea = document.querySelector('textarea');
-    
-    // Stop animation if textarea has content
-    if (textArea && textArea.value.length > 0) {
-      setIsActive(false);
-      return;
-    }
-
-    if (!isActive) {
-      setDisplayText("");
-      return;
-    }
-
     let currentText = examples[currentIndex];
     let currentChar = 0;
     let typingInterval: NodeJS.Timeout | null = null;
     let pauseTimeout: NodeJS.Timeout | null = null;
 
     const typeNextChar = () => {
-      if (currentChar < currentText.length && isTyping && isActive) {
+      if (currentChar < currentText.length && isTyping) {
         setDisplayText(currentText.substring(0, currentChar + 1));
         currentChar++;
       } else if (currentChar >= currentText.length) {
@@ -49,27 +35,23 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         }
         
         pauseTimeout = setTimeout(() => {
-          if (isActive) {
-            setIsTyping(false);
-            eraseText();
-          }
+          setIsTyping(false);
+          eraseText();
         }, 500);
       }
     };
 
     const eraseText = () => {
       const eraseInterval = setInterval(() => {
-        if (currentChar > 0 && isActive) {
+        if (currentChar > 0) {
           currentChar--;
           setDisplayText(currentText.substring(0, currentChar));
         } else {
           clearInterval(eraseInterval);
-          if (isActive) {
-            setTimeout(() => {
-              setCurrentIndex((prev) => (prev + 1) % examples.length);
-              setIsTyping(true);
-            }, 250);
-          }
+          setTimeout(() => {
+            setCurrentIndex((prev) => (prev + 1) % examples.length);
+            setIsTyping(true);
+          }, 250);
         }
       }, 25);
 
@@ -78,55 +60,32 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
 
     typingInterval = setInterval(typeNextChar, 25);
 
-    const handleFocus = () => setIsActive(false);
-    const handleInput = (e: Event) => {
-      const target = e.target as HTMLTextAreaElement;
-      if (target.value.length > 0) {
-        setIsActive(false);
-      } else {
-        setIsActive(true);
-      }
-    };
-
-    if (textArea) {
-      textArea.addEventListener('focus', handleFocus);
-      textArea.addEventListener('click', handleFocus);
-      textArea.addEventListener('input', handleInput);
-    }
-
     return () => {
       if (typingInterval) clearInterval(typingInterval);
       if (pauseTimeout) clearTimeout(pauseTimeout);
-      if (textArea) {
-        textArea.removeEventListener('focus', handleFocus);
-        textArea.removeEventListener('click', handleFocus);
-        textArea.removeEventListener('input', handleInput);
-      }
     };
-  }, [currentIndex, isTyping, isActive]);
+  }, [currentIndex, isTyping]);
 
   return (
-    <div className={`absolute inset-0 ${className}`}>
+    <div className={`${className}`}>
       <AnimatePresence mode="wait">
-        {isActive && (
+        <motion.span
+          key={currentIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.125 }}
+          className="flex items-center text-muted-foreground text-sm pointer-events-none"
+        >
+          {displayText}
           <motion.span
-            key={currentIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.125 }}
-            className="absolute inset-0 flex items-center px-3 py-2 text-muted-foreground text-sm pointer-events-none"
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.2, repeat: Infinity }}
+            className="inline-block w-[2px] h-[14px] bg-muted-foreground/50 ml-[2px]"
           >
-            {displayText}
-            <motion.span
-              animate={{ opacity: [0, 1, 0] }}
-              transition={{ duration: 0.2, repeat: Infinity }}
-              className="inline-block w-[2px] h-[14px] bg-muted-foreground/50 ml-[2px]"
-            >
-              |
-            </motion.span>
+            |
           </motion.span>
-        )}
+        </motion.span>
       </AnimatePresence>
     </div>
   );
