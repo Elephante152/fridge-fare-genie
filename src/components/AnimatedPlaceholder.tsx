@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const examples = [
-  "E.g., I have chicken, rice, and vegetables. Looking for gluten-free recipes under 30 minutes...",
-  "E.g., I have tofu, quinoa, and fresh vegetables. Need high-protein vegetarian meals...",
-  "E.g., I have ground beef, potatoes, and carrots. Want family-friendly comfort food recipes...",
-  "E.g., I have salmon, asparagus, and lemon. Looking for healthy Mediterranean-style dishes...",
-  "E.g., I have black beans, corn, and avocados. Need quick Mexican-inspired vegetarian meals..."
+  "E.g., Training for a marathon - need high-carb, protein-rich meals with sweet potatoes, quinoa, and lean proteins...",
+  "E.g., Preparing for a fight - looking for anti-inflammatory foods like berries, leafy greens, and omega-3 rich fish...",
+  "E.g., Managing blood pressure - need low-sodium recipes with potassium-rich foods like bananas and avocados...",
+  "E.g., Supporting gut health during menstrual cycle - seeking fermented foods, fiber-rich grains, and iron-rich ingredients...",
+  "E.g., Dealing with inflammation - need turmeric, ginger, and antioxidant-rich ingredients for healing meals..."
 ];
 
 interface AnimatedPlaceholderProps {
