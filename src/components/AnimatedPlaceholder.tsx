@@ -21,42 +21,50 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
   useEffect(() => {
     let currentText = examples[currentIndex];
     let currentChar = 0;
-    let typingInterval: NodeJS.Timeout;
-    let pauseTimeout: NodeJS.Timeout;
+    let typingInterval: NodeJS.Timeout | null = null;
+    let pauseTimeout: NodeJS.Timeout | null = null;
 
     const typeNextChar = () => {
       if (currentChar < currentText.length && isTyping) {
         setDisplayText(currentText.substring(0, currentChar + 1));
         currentChar++;
       } else if (currentChar >= currentText.length) {
+        if (typingInterval) {
+          clearInterval(typingInterval);
+          typingInterval = null;
+        }
+        
         pauseTimeout = setTimeout(() => {
           setIsTyping(false);
-          currentChar = currentText.length;
           eraseText();
-        }, 2000); // 2 second pause at the end
+        }, 2000);
       }
     };
 
     const eraseText = () => {
-      typingInterval = setInterval(() => {
+      const eraseInterval = setInterval(() => {
         if (currentChar > 0) {
-          setDisplayText(currentText.substring(0, currentChar - 1));
           currentChar--;
+          setDisplayText(currentText.substring(0, currentChar));
         } else {
-          clearInterval(typingInterval);
+          clearInterval(eraseInterval);
           setTimeout(() => {
             setCurrentIndex((prev) => (prev + 1) % examples.length);
             setIsTyping(true);
-          }, 1000); // 1 second pause before next example
+          }, 1000);
         }
-      }, 100); // Consistent erasing speed
+      }, 100);
+
+      return () => clearInterval(eraseInterval);
     };
 
-    typingInterval = setInterval(typeNextChar, 100); // Consistent typing speed
+    // Start typing animation
+    typingInterval = setInterval(typeNextChar, 100);
 
+    // Cleanup function
     return () => {
-      clearInterval(typingInterval);
-      clearTimeout(pauseTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+      if (pauseTimeout) clearTimeout(pauseTimeout);
     };
   }, [currentIndex, isTyping]);
 
