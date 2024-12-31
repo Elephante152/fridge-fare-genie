@@ -38,7 +38,6 @@ const MainForm = () => {
   }, [isLoading]);
 
   const handleGenerate = async (images: string[], requirements: string) => {
-    // Check if user is authenticated
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       toast({
