@@ -22,13 +22,13 @@ const ButtonStages = ({ currentStage }: ButtonStagesProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="flex items-center justify-center gap-2 text-brand-myrtleGreen font-medium"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex items-center justify-center gap-3 text-brand-myrtleGreen font-medium bg-white/50 backdrop-blur-sm rounded-lg p-3 shadow-sm"
         >
           {React.createElement(stages[currentStage].icon, {
-            className: "w-5 h-5 animate-bounce"
+            className: "w-6 h-6 animate-pulse text-brand-myrtleGreen"
           })}
-          <span>{stages[currentStage].text}</span>
+          <span className="text-lg">{stages[currentStage].text}</span>
         </motion.div>
       )}
     </AnimatePresence>

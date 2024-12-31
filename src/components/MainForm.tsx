@@ -20,7 +20,7 @@ const MainForm = () => {
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (isLoading) {
-      // Start the stage animation sequence
+      // Start the stage animation sequence with longer delays
       setCurrentStage(0);
       timeout = setTimeout(() => {
         setCurrentStage(1);
@@ -28,9 +28,9 @@ const MainForm = () => {
           setCurrentStage(2);
           timeout = setTimeout(() => {
             setCurrentStage(3);
-          }, 1000);
-        }, 1000);
-      }, 1000);
+          }, 2000); // Third stage
+        }, 2000); // Second stage
+      }, 2000); // First stage
     } else {
       setCurrentStage(-1);
     }
@@ -87,7 +87,7 @@ const MainForm = () => {
         user_id: user.id,
       }));
 
-      // Add a slight delay before showing results for better UX
+      // Add a longer delay before showing results for better UX
       setTimeout(() => {
         setRecipes(recipesToSave);
         setCurrentRequirements(requirements);
@@ -95,7 +95,7 @@ const MainForm = () => {
         triggerConfetti();
         setShowResults(true);
         setIsLoading(false);
-      }, 1000);
+      }, 2000);
     } catch (error) {
       console.error('Error:', error);
       toast({
