@@ -29,13 +29,13 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         setDisplayText(currentText.substring(0, currentChar + 1));
         currentChar++;
       } else if (currentChar >= currentText.length) {
-        // Pause at the end of typing
+        // Longer pause at the end of typing
         pauseTimeout = setTimeout(() => {
           setIsTyping(false);
           // Start erasing
           currentChar = currentText.length;
-          typingInterval = setInterval(eraseChar, 30);
-        }, 2000);
+          typingInterval = setInterval(eraseChar, 50); // Slightly slower erasing
+        }, 3000); // Longer pause at the end (3 seconds)
       }
     };
 
@@ -45,13 +45,16 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         currentChar--;
       } else {
         clearInterval(typingInterval);
-        // Move to next example after erasing
-        setCurrentIndex((prev) => (prev + 1) % examples.length);
-        setIsTyping(true);
+        // Add a small pause before starting the next example
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % examples.length);
+          setIsTyping(true);
+        }, 1000); // 1 second pause before next example
       }
     };
 
-    typingInterval = setInterval(typeNextChar, 50);
+    // Slower typing speed (70ms between characters)
+    typingInterval = setInterval(typeNextChar, 70);
 
     return () => {
       clearInterval(typingInterval);
@@ -67,6 +70,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }} // Smoother fade transition
           className="absolute text-brand-jet/50 text-sm"
         >
           {displayText}
