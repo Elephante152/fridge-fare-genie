@@ -39,8 +39,10 @@ const Landing = () => {
       <header className="relative z-10 bg-white/95 backdrop-blur-md border-b border-brand-myrtleGreen/10 shadow-lg fixed w-full top-0">
         <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
           <nav className="flex justify-between items-center">
-            <div className="text-xl md:text-3xl font-bold text-brand-myrtleGreen hover:text-brand-myrtleGreen/80 transition-colors duration-300">
-              MealPrepGenie v3
+            <div className="relative">
+              <div className="text-xl md:text-3xl font-bold relative z-10 bg-clip-text text-transparent animate-gradient-x bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow bg-[length:200%_100%]">
+                MealPrepGenie v3
+              </div>
             </div>
             <div className="flex items-center space-x-3 md:space-x-6">
               <Button

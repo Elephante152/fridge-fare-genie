@@ -117,21 +117,23 @@ const RecipeGenerationForm = ({ onGenerate, isLoading }: RecipeGenerationFormPro
             >
               <Button
                 onClick={handleSubmit}
-                className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
+                className={`w-full transition-all duration-300 py-6 text-lg font-medium rounded-2xl shadow-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden
                   ${isLoading 
                     ? 'bg-brand-myrtleGreen text-white' 
-                    : 'bg-gradient-to-r from-brand-aquamarine via-brand-myrtleGreen to-brand-yellow text-white font-semibold tracking-wide hover:bg-gradient-to-l'
+                    : 'animate-gradient-x text-white font-semibold tracking-wide before:absolute before:inset-0 before:bg-gradient-to-r before:from-brand-aquamarine before:via-brand-myrtleGreen before:to-brand-yellow before:animate-gradient-x before:bg-[length:200%_100%]'
                   }`}
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Analyzing input...
-                  </>
-                ) : (
-                  'Generate Recipes'
-                )}
+                <span className="relative z-10">
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Analyzing input...
+                    </>
+                  ) : (
+                    'Generate Recipes'
+                  )}
+                </span>
               </Button>
             </motion.div>
           </div>
