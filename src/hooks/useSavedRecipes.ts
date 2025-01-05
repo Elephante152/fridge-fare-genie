@@ -32,29 +32,50 @@ export const useSavedRecipes = () => {
     },
   });
 
-  // Set up real-time subscription
+  // Set up real-time subscription with specific channel name
   useEffect(() => {
+    const { data: { user } } = supabase.auth.getUser();
+    if (!user) return;
+
+    // Create a unique channel name for this user's saved recipes
     const channel = supabase
-      .channel('saved_recipes_changes')
+      .channel(`saved_recipes_${user.id}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
-          table: 'saved_recipes'
+          table: 'saved_recipes',
+          filter: `user_id=eq.${user.id}`
         },
         (payload) => {
           console.log('Real-time update received:', payload);
           // Invalidate and refetch
           queryClient.invalidateQueries({ queryKey: ["savedRecipes"] });
+          
+          // Show toast notification based on the event type
+          if (payload.eventType === 'INSERT') {
+            toast({
+              title: "Recipe saved",
+              description: "Recipe has been added to your favorites",
+              duration: 1500,
+            });
+          } else if (payload.eventType === 'DELETE') {
+            toast({
+              title: "Recipe removed",
+              description: "Recipe has been removed from your favorites",
+              duration: 1500,
+            });
+          }
         }
       )
       .subscribe();
 
+    // Cleanup subscription on unmount
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, toast]);
 
   const saveRecipe = useMutation({
     mutationFn: async (recipe: Recipe) => {
