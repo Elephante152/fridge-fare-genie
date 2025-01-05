@@ -32,19 +32,43 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activity_level: Database["public"]["Enums"]["activity_level"] | null
+          allergies: string[] | null
+          calorie_intake: number | null
           created_at: string
+          diet_type: Database["public"]["Enums"]["diet_type"] | null
           email: string | null
+          favorite_cuisines: string[] | null
           id: string
+          meals_per_day: number | null
+          onboarding_completed: boolean | null
+          preferred_cooking_tools: string[] | null
         }
         Insert: {
+          activity_level?: Database["public"]["Enums"]["activity_level"] | null
+          allergies?: string[] | null
+          calorie_intake?: number | null
           created_at?: string
+          diet_type?: Database["public"]["Enums"]["diet_type"] | null
           email?: string | null
+          favorite_cuisines?: string[] | null
           id: string
+          meals_per_day?: number | null
+          onboarding_completed?: boolean | null
+          preferred_cooking_tools?: string[] | null
         }
         Update: {
+          activity_level?: Database["public"]["Enums"]["activity_level"] | null
+          allergies?: string[] | null
+          calorie_intake?: number | null
           created_at?: string
+          diet_type?: Database["public"]["Enums"]["diet_type"] | null
           email?: string | null
+          favorite_cuisines?: string[] | null
           id?: string
+          meals_per_day?: number | null
+          onboarding_completed?: boolean | null
+          preferred_cooking_tools?: string[] | null
         }
         Relationships: []
       }
@@ -128,7 +152,19 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      activity_level:
+        | "Sedentary"
+        | "Lightly Active"
+        | "Moderately Active"
+        | "Very Active"
+        | "Extremely Active"
+      diet_type:
+        | "Omnivore"
+        | "Vegetarian"
+        | "Vegan"
+        | "Pescatarian"
+        | "Keto"
+        | "Paleo"
     }
     CompositeTypes: {
       [_ in never]: never
