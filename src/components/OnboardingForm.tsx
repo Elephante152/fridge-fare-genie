@@ -9,14 +9,31 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Utensils, AlertTriangle, Globe, Activity, BarChart, Coffee, Wand2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { Database } from '@/integrations/supabase/types';
+
+type DietType = Database['public']['Enums']['diet_type'];
+type ActivityLevel = Database['public']['Enums']['activity_level'];
+
+interface FormData {
+  dietType: DietType;
+  allergies: string;
+  favoriteCuisines: string;
+  activityLevel: ActivityLevel;
+  calorieIntake: number;
+  mealsPerDay: number;
+  preferredCookingTools: string;
+}
 
 interface OnboardingFormProps {
   onComplete: () => void;
 }
 
+const DIET_TYPES: DietType[] = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'];
+const ACTIVITY_LEVELS: ActivityLevel[] = ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'];
+
 const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     dietType: 'Omnivore',
     allergies: '',
     favoriteCuisines: '',
@@ -91,10 +108,10 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
             </div>
             <RadioGroup
               value={formData.dietType}
-              onValueChange={(value) => setFormData({ ...formData, dietType: value })}
+              onValueChange={(value: DietType) => setFormData({ ...formData, dietType: value })}
               className="grid grid-cols-2 gap-4"
             >
-              {['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'].map((diet) => (
+              {DIET_TYPES.map((diet) => (
                 <div key={diet} className="flex items-center space-x-2">
                   <RadioGroupItem value={diet} id={diet} />
                   <Label htmlFor={diet}>{diet}</Label>
@@ -148,10 +165,10 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
             </div>
             <RadioGroup
               value={formData.activityLevel}
-              onValueChange={(value) => setFormData({ ...formData, activityLevel: value })}
+              onValueChange={(value: ActivityLevel) => setFormData({ ...formData, activityLevel: value })}
               className="space-y-2"
             >
-              {['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'].map((level) => (
+              {ACTIVITY_LEVELS.map((level) => (
                 <div key={level} className="flex items-center space-x-2">
                   <RadioGroupItem value={level} id={level} />
                   <Label htmlFor={level}>{level}</Label>
