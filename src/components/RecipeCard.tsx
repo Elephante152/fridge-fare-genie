@@ -21,8 +21,11 @@ interface RecipeCardProps {
 const RecipeCard = ({ recipe, isExpanded, onToggle }: RecipeCardProps) => {
   const { savedRecipes } = useSavedRecipes();
   const savedRecipe = savedRecipes.find(
-    (saved) => saved.title === recipe.title && 
-    saved.description === recipe.description
+    (saved) => 
+      saved.title === recipe.title && 
+      saved.description === recipe.description &&
+      saved.cooking_time === recipe.cooking_time &&
+      saved.servings === recipe.servings
   );
 
   return (
