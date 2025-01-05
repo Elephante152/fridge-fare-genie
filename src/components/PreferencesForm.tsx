@@ -158,7 +158,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComple
               onChange={(e) => setFormData({ ...formData, preferredCookingTools: e.target.value })}
               className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
             />
-            {!formData.preferredCookingTools && <AnimatedPlaceholder />}
+            {!formData.preferredCookingTools && <AnimatedPlaceholder type="cookingTools" />}
           </div>
         </div>
 
