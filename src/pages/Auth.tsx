@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const AuthPage = () => {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session) => {
         if (event === 'SIGNED_IN' && session) {
           toast({
             title: "Success!",
@@ -46,13 +47,11 @@ const AuthPage = () => {
           setError(null);
           navigate('/');
         }
-        if (event === 'USER_DELETED') {
+        if (event === 'USER_UPDATED') {
           toast({
-            title: "Account deleted",
-            description: "Your account has been successfully deleted.",
-            variant: "destructive",
+            title: "Account updated",
+            description: "Your account has been successfully updated.",
           });
-          navigate('/');
         }
         // Handle specific error cases
         if (event === 'PASSWORD_RECOVERY') {
@@ -82,6 +81,15 @@ const AuthPage = () => {
       default:
         return 'An error occurred. Please try again.';
     }
+  };
+
+  const handleAuthError = (error: AuthError) => {
+    setError(error.message);
+    toast({
+      title: "Authentication Error",
+      description: getErrorMessage(error.message),
+      variant: "destructive",
+    });
   };
 
   if (isLoading) {
@@ -133,14 +141,6 @@ const AuthPage = () => {
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/recipe`}
-            onError={(error) => {
-              setError(error.message);
-              toast({
-                title: "Authentication Error",
-                description: getErrorMessage(error.message),
-                variant: "destructive",
-              });
-            }}
             localization={{
               variables: {
                 sign_in: {
