@@ -75,7 +75,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
     }
   };
 
-  const renderStep = () => {
+const renderStep = () => {
     switch (step) {
       case 1:
         return (
@@ -161,7 +161,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
                 onChange={(e) => setFormData({ ...formData, preferredCookingTools: e.target.value })}
                 className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
               />
-              {!formData.preferredCookingTools && <AnimatedPlaceholder />}
+              {!formData.preferredCookingTools && <AnimatedPlaceholder type="cookingTools" />}
             </div>
           </motion.div>
         );

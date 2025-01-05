@@ -28,7 +28,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         toast({
           title: "Recipe removed",
           description: "Recipe has been removed from your favorites",
-          duration: 1500, // 1.5 seconds
+          duration: 1500,
         });
       } else {
         console.log('Saving recipe:', recipe);
@@ -36,7 +36,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         toast({
           title: "Recipe saved!",
           description: "Recipe has been added to your favorites",
-          duration: 1500, // 1.5 seconds
+          duration: 1500,
         });
       }
     } catch (error) {
@@ -45,7 +45,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         title: "Error",
         description: "Failed to save recipe. Please try again.",
         variant: "destructive",
-        duration: 1500, // 1.5 seconds
+        duration: 1500,
       });
     } finally {
       setTimeout(() => {
