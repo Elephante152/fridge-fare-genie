@@ -1,6 +1,5 @@
-import { Utensils } from 'lucide-react';
+import { Utensils, Salad, Fish, Beef, Leaf, Apple } from 'lucide-react';
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from 'framer-motion';
 import { DietType } from '@/types/preferences';
 
@@ -9,6 +8,24 @@ interface DietTypeSectionProps {
   onChange: (value: DietType) => void;
   dietTypes: DietType[];
 }
+
+const getDietIcon = (diet: DietType) => {
+  switch (diet) {
+    case 'Vegan':
+      return <Leaf className="w-6 h-6" />;
+    case 'Vegetarian':
+      return <Salad className="w-6 h-6" />;
+    case 'Pescatarian':
+      return <Fish className="w-6 h-6" />;
+    case 'Omnivore':
+      return <Beef className="w-6 h-6" />;
+    case 'Keto':
+    case 'Paleo':
+      return <Apple className="w-6 h-6" />;
+    default:
+      return <Utensils className="w-6 h-6" />;
+  }
+};
 
 const DietTypeSection = ({ value, onChange, dietTypes }: DietTypeSectionProps) => {
   return (
@@ -21,29 +38,24 @@ const DietTypeSection = ({ value, onChange, dietTypes }: DietTypeSectionProps) =
         <Utensils className="w-5 h-5" />
         <Label className="text-xl font-semibold">Diet Type</Label>
       </div>
-      <RadioGroup
-        defaultValue={value}
-        value={value}
-        onValueChange={onChange}
-        className="grid grid-cols-2 gap-4"
-      >
+      <div className="grid grid-cols-2 gap-4">
         {dietTypes.map((diet) => (
-          <div key={diet} className="relative">
-            <RadioGroupItem
-              value={diet}
-              id={diet}
-              className="peer sr-only"
-              aria-label={diet}
-            />
-            <Label
-              htmlFor={diet}
-              className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50 hover:border-brand-myrtleGreen/50 focus-within:ring-2 focus-within:ring-brand-myrtleGreen focus-within:ring-offset-2"
-            >
-              {diet}
-            </Label>
-          </div>
+          <button
+            key={diet}
+            onClick={() => onChange(diet)}
+            className={`flex flex-col items-center justify-center p-4 space-y-2 rounded-lg border-2 transition-all duration-200 ${
+              value === diet 
+                ? 'border-brand-myrtleGreen bg-brand-aquamarine/20 shadow-md' 
+                : 'border-gray-200 hover:border-brand-myrtleGreen/50 hover:bg-gray-50'
+            }`}
+          >
+            <div className={`text-brand-myrtleGreen ${value === diet ? 'scale-110' : ''} transition-transform duration-200`}>
+              {getDietIcon(diet)}
+            </div>
+            <span className="font-medium text-sm text-center">{diet}</span>
+          </button>
         ))}
-      </RadioGroup>
+      </div>
     </motion.div>
   );
 };

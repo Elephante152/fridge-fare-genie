@@ -1,6 +1,5 @@
-import { Activity } from 'lucide-react';
+import { Activity, Bed, Walk, Running, Dumbbell, Bike } from 'lucide-react';
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from 'framer-motion';
 import { ActivityLevel } from '@/types/preferences';
 
@@ -9,6 +8,23 @@ interface ActivitySectionProps {
   onChange: (value: ActivityLevel) => void;
   activityLevels: ActivityLevel[];
 }
+
+const getActivityIcon = (level: ActivityLevel) => {
+  switch (level) {
+    case 'Sedentary':
+      return <Bed className="w-6 h-6" />;
+    case 'Lightly Active':
+      return <Walk className="w-6 h-6" />;
+    case 'Moderately Active':
+      return <Bike className="w-6 h-6" />;
+    case 'Very Active':
+      return <Running className="w-6 h-6" />;
+    case 'Extremely Active':
+      return <Dumbbell className="w-6 h-6" />;
+    default:
+      return <Activity className="w-6 h-6" />;
+  }
+};
 
 const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionProps) => {
   return (
@@ -21,29 +37,24 @@ const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionPro
         <Activity className="w-5 h-5" />
         <Label className="text-xl font-semibold">Activity Level</Label>
       </div>
-      <RadioGroup
-        defaultValue={value}
-        value={value}
-        onValueChange={onChange}
-        className="space-y-2"
-      >
+      <div className="space-y-3">
         {activityLevels.map((level) => (
-          <div key={level} className="relative">
-            <RadioGroupItem
-              value={level}
-              id={level}
-              className="peer sr-only"
-              aria-label={level}
-            />
-            <Label
-              htmlFor={level}
-              className="flex items-center justify-center w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50 hover:border-brand-myrtleGreen/50 focus-within:ring-2 focus-within:ring-brand-myrtleGreen focus-within:ring-offset-2"
-            >
-              {level}
-            </Label>
-          </div>
+          <button
+            key={level}
+            onClick={() => onChange(level)}
+            className={`flex items-center w-full p-4 space-x-3 rounded-lg border-2 transition-all duration-200 ${
+              value === level 
+                ? 'border-brand-myrtleGreen bg-brand-aquamarine/20 shadow-md' 
+                : 'border-gray-200 hover:border-brand-myrtleGreen/50 hover:bg-gray-50'
+            }`}
+          >
+            <div className={`text-brand-myrtleGreen ${value === level ? 'scale-110' : ''} transition-transform duration-200`}>
+              {getActivityIcon(level)}
+            </div>
+            <span className="font-medium">{level}</span>
+          </button>
         ))}
-      </RadioGroup>
+      </div>
     </motion.div>
   );
 };
