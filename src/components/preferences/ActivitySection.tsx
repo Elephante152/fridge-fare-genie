@@ -22,6 +22,7 @@ const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionPro
         <Label className="text-xl font-semibold">Activity Level</Label>
       </div>
       <RadioGroup
+        defaultValue={value}
         value={value}
         onValueChange={onChange}
         className="space-y-2"
@@ -36,7 +37,7 @@ const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionPro
             />
             <Label
               htmlFor={level}
-              className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50 hover:border-brand-myrtleGreen/50 focus-within:ring-2 focus-within:ring-brand-myrtleGreen focus-within:ring-offset-2"
+              className="flex items-center justify-center w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50 hover:border-brand-myrtleGreen/50 focus-within:ring-2 focus-within:ring-brand-myrtleGreen focus-within:ring-offset-2"
             >
               {level}
             </Label>

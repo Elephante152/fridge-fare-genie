@@ -22,6 +22,7 @@ const DietTypeSection = ({ value, onChange, dietTypes }: DietTypeSectionProps) =
         <Label className="text-xl font-semibold">Diet Type</Label>
       </div>
       <RadioGroup
+        defaultValue={value}
         value={value}
         onValueChange={onChange}
         className="grid grid-cols-2 gap-4"
