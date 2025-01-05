@@ -1,125 +1,97 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Recipe } from '@/types/recipe';
-import { Button } from '@/components/ui/button';
+import SaveRecipeButton from '@/components/SaveRecipeButton';
+import { useSavedRecipes } from '@/hooks/useSavedRecipes';
 
 interface RecipeCardProps {
   recipe: Recipe;
   isExpanded: boolean;
   onToggle: () => void;
-  onSave: (recipe: Recipe) => Promise<void>;
   index: number;
 }
 
-const RecipeCard = ({ recipe, isExpanded, onToggle, onSave, index }: RecipeCardProps) => {
+const RecipeCard = ({ recipe, isExpanded, onToggle, index }: RecipeCardProps) => {
+  const { savedRecipes } = useSavedRecipes();
+  const isSaved = savedRecipes.some(saved => saved.title === recipe.title);
+  const savedRecipeId = savedRecipes.find(saved => saved.title === recipe.title)?.id;
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="border rounded-lg overflow-hidden bg-white/80 shadow-sm hover:shadow-md transition-shadow"
+      className="bg-white rounded-lg shadow-sm border border-brand-aquamarine/20 overflow-hidden"
     >
-      <div className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
+      <div className="p-4 sm:p-6">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
+            <h4 className="text-lg sm:text-xl font-serif font-medium text-brand-myrtleGreen mb-2">
+              {recipe.title}
+            </h4>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              {recipe.description}
+            </p>
+          </div>
+          <SaveRecipeButton
+            recipe={recipe}
+            isSaved={isSaved}
+            savedRecipeId={savedRecipeId}
+          />
+        </div>
+
         <button
           onClick={onToggle}
-          className="flex-1 text-left hover:bg-brand-yellow/10 transition-colors rounded-lg p-2 w-full"
+          className="flex items-center gap-2 text-sm text-brand-myrtleGreen/80 hover:text-brand-myrtleGreen mt-4 transition-colors"
         >
-          <h4 className="font-semibold text-base sm:text-lg font-serif">{recipe.title}</h4>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1">{recipe.description}</p>
+          {isExpanded ? (
+            <>
+              Show less <ChevronUp className="h-4 w-4" />
+            </>
+          ) : (
+            <>
+              Show more <ChevronDown className="h-4 w-4" />
+            </>
+          )}
         </button>
-        <Button
-          onClick={() => onSave(recipe)}
-          variant="secondary"
-          size="sm"
-          className="flex-shrink-0 w-full sm:w-auto"
-        >
-          Save Recipe
-        </Button>
-      </div>
 
-      {isExpanded && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="overflow-hidden"
-        >
-          <div className="p-3 sm:p-4 pt-0 border-t bg-brand-platinum/10">
-            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-              <RecipeSection
-                title="Ingredients"
-                items={recipe.ingredients}
-                index={index}
-              />
-              <RecipeSection
-                title="Instructions"
-                items={recipe.instructions}
-                index={index}
-                ordered
-              />
-            </div>
-            <RecipeMetadata recipe={recipe} />
-          </div>
-        </motion.div>
-      )}
-    </motion.div>
-  );
-};
-
-const RecipeSection = ({ 
-  title, 
-  items, 
-  index, 
-  ordered = false 
-}: { 
-  title: string; 
-  items?: string[]; 
-  index: number;
-  ordered?: boolean;
-}) => {
-  const ListComponent = ordered ? 'ol' : 'ul';
-  const listClass = ordered ? 'list-decimal' : 'list-disc';
-
-  return (
-    <motion.div 
-      className="space-y-2 sm:space-y-3"
-      initial={{ opacity: 0, x: ordered ? 20 : -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: 0.1 }}
-    >
-      <h5 className="font-medium text-brand-myrtleGreen">{title}</h5>
-      <ListComponent className={`${listClass} list-inside space-y-1 text-xs sm:text-sm`}>
-        {items?.map((item, i) => (
-          <motion.li 
-            key={i} 
-            className="text-muted-foreground"
-            initial={{ opacity: 0, x: ordered ? 10 : -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.05 }}
+        {isExpanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 space-y-4"
           >
-            {item}
-          </motion.li>
-        ))}
-      </ListComponent>
-    </motion.div>
-  );
-};
+            <div>
+              <h5 className="font-medium text-brand-myrtleGreen mb-2">Cooking Information</h5>
+              <div className="flex gap-4 text-sm text-muted-foreground">
+                <span>🕒 {recipe.cooking_time}</span>
+                <span>👥 Serves {recipe.servings}</span>
+              </div>
+            </div>
 
-const RecipeMetadata = ({ recipe }: { recipe: Recipe }) => {
-  return (
-    <motion.div 
-      className="mt-3 sm:mt-4 flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: 0.2 }}
-    >
-      {recipe.cooking_time && (
-        <span>🕒 {recipe.cooking_time}</span>
-      )}
-      {recipe.servings && (
-        <span>👥 Serves {recipe.servings}</span>
-      )}
+            <div>
+              <h5 className="font-medium text-brand-myrtleGreen mb-2">Ingredients</h5>
+              <ul className="list-disc list-inside text-sm space-y-1 text-muted-foreground">
+                {recipe.ingredients.map((ingredient, i) => (
+                  <li key={i}>{ingredient}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="font-medium text-brand-myrtleGreen mb-2">Instructions</h5>
+              <ol className="list-decimal list-inside text-sm space-y-2 text-muted-foreground">
+                {recipe.instructions.map((instruction, i) => (
+                  <li key={i}>{instruction}</li>
+                ))}
+              </ol>
+            </div>
+          </motion.div>
+        )}
+      </div>
     </motion.div>
   );
 };

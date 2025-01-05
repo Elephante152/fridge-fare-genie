@@ -8,8 +8,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Recipe } from '@/types/recipe';
 import { motion } from 'framer-motion';
-import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import RecipeCard from './RecipeCard';
 
 interface RecipeResultModalProps {
@@ -22,45 +20,9 @@ interface RecipeResultModalProps {
 
 const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: RecipeResultModalProps) => {
   const [expandedRecipeIndex, setExpandedRecipeIndex] = useState<number | null>(null);
-  const { toast } = useToast();
 
   const toggleRecipe = (index: number) => {
     setExpandedRecipeIndex(expandedRecipeIndex === index ? null : index);
-  };
-
-  const handleSaveRecipe = async (recipe: Recipe) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast({
-          title: "Authentication required",
-          description: "Please sign in to save recipes.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { error } = await supabase
-        .from('saved_recipes')
-        .insert([{
-          ...recipe,
-          user_id: user.id
-        }]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Recipe saved!",
-        description: "The recipe has been added to your collection.",
-      });
-    } catch (error) {
-      console.error('Error saving recipe:', error);
-      toast({
-        title: "Error saving recipe",
-        description: "Something went wrong while saving the recipe. Please try again.",
-        variant: "destructive",
-      });
-    }
   };
 
   return (
@@ -114,7 +76,6 @@ const RecipeResultModal = ({ isOpen, onClose, recipes, requirements, images }: R
                   recipe={recipe}
                   isExpanded={expandedRecipeIndex === index}
                   onToggle={() => toggleRecipe(index)}
-                  onSave={handleSaveRecipe}
                   index={index}
                 />
               ))}
