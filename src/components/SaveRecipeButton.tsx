@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Heart, HeartOff } from "lucide-react";
 import { useSavedRecipes } from "@/hooks/useSavedRecipes";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import type { Recipe } from "@/types/recipe";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -17,22 +17,28 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
   const { toast } = useToast();
   const [isClicked, setIsClicked] = React.useState(false);
   const [showFeedback, setShowFeedback] = React.useState(false);
+  const [localIsSaved, setLocalIsSaved] = React.useState(isSaved);
+
+  React.useEffect(() => {
+    setLocalIsSaved(isSaved);
+  }, [isSaved]);
 
   const handleToggleSave = async () => {
     setIsClicked(true);
     setShowFeedback(true);
     
     try {
-      if (isSaved && savedRecipeId) {
+      if (localIsSaved && savedRecipeId) {
         await removeSavedRecipe(savedRecipeId);
+        setLocalIsSaved(false);
         toast({
           title: "Recipe removed",
           description: "Recipe has been removed from your favorites",
           duration: 1500,
         });
       } else {
-        console.log('Saving recipe:', recipe);
         await saveRecipe(recipe);
+        setLocalIsSaved(true);
         toast({
           title: "Recipe saved!",
           description: "Recipe has been added to your favorites",
@@ -59,7 +65,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
 
   const getButtonStyles = () => {
     if (isLoading) return "bg-gray-200";
-    if (isSaved) {
+    if (localIsSaved) {
       return "bg-red-500 hover:bg-red-600 text-white";
     }
     return isClicked 
@@ -87,12 +93,12 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
-            ) : isSaved ? (
+            ) : localIsSaved ? (
               <HeartOff className="h-4 w-4" />
             ) : (
               <Heart className={`h-4 w-4 ${showFeedback ? 'animate-ping' : ''}`} />
             )}
-            {isSaved ? "Remove from favorites" : "Save recipe"}
+            {localIsSaved ? "Remove from favorites" : "Save recipe"}
             
             {isLoading && (
               <motion.div
@@ -107,7 +113,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
               />
             )}
 
-            {showFeedback && !isLoading && !isSaved && (
+            {showFeedback && !isLoading && !localIsSaved && (
               <motion.div
                 className="absolute inset-0 bg-green-500/20"
                 initial={{ scale: 0, opacity: 0 }}

@@ -13,7 +13,7 @@ export const useSavedRecipes = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      console.log('Fetching saved recipes for user:', user.id); // Debug log
+      console.log('Fetching saved recipes for user:', user.id);
 
       const { data, error } = await supabase
         .from("saved_recipes")
@@ -25,7 +25,7 @@ export const useSavedRecipes = () => {
         throw error;
       }
 
-      console.log('Fetched saved recipes:', data); // Debug log
+      console.log('Fetched saved recipes:', data);
       return data || [];
     },
   });
@@ -35,7 +35,7 @@ export const useSavedRecipes = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("User not authenticated");
 
-      console.log('Saving recipe with user_id:', user.id); // Debug log
+      console.log('Saving recipe with user_id:', user.id);
 
       const recipeToSave = {
         ...recipe,
@@ -53,14 +53,14 @@ export const useSavedRecipes = () => {
         throw error;
       }
 
-      console.log('Successfully saved recipe:', data); // Debug log
+      console.log('Successfully saved recipe:', data);
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["savedRecipes"] });
     },
     onError: (error) => {
-      console.error('Mutation error:', error); // Debug log
+      console.error('Mutation error:', error);
       toast({
         title: "Error saving recipe",
         description: "There was a problem saving the recipe. Please try again.",
