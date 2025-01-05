@@ -46,19 +46,31 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
 
   const isLoading = isSaving || isRemoving;
 
+  const getButtonStyles = () => {
+    if (isLoading) return "bg-gray-200";
+    if (isSaved) {
+      return isClicked 
+        ? "bg-red-500 hover:bg-red-600 text-white" 
+        : "bg-green-500 hover:bg-green-600 text-white";
+    }
+    return isClicked 
+      ? "bg-green-500 text-white" 
+      : "bg-secondary hover:bg-secondary/80";
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <Button
-        variant={isSaved ? "secondary" : "secondary"}
+        variant="secondary"
         size="sm"
         onClick={handleToggleSave}
         disabled={isLoading}
-        className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-200
-          ${isSaved ? 'bg-green-500 hover:bg-green-600 text-white' : ''}
-          ${isClicked && !isSaved ? 'animate-pulse bg-green-400' : ''}
+        className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-300
+          ${getButtonStyles()}
+          ${isClicked ? 'animate-pulse' : ''}
         `}
       >
         {isLoading ? (
