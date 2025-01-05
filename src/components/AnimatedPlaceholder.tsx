@@ -1,22 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const examples = [
-  "E.g., Training for a marathon - need high-carb, protein-rich meals with sweet potatoes, quinoa, and lean proteins...",
-  "E.g., Preparing for a fight - looking for anti-inflammatory foods like berries, leafy greens, and omega-3 rich fish...",
-  "E.g., Managing blood pressure - need low-sodium recipes with potassium-rich foods like bananas and avocados...",
-  "E.g., Supporting gut health during menstrual cycle - seeking fermented foods, fiber-rich grains, and iron-rich ingredients...",
-  "E.g., Dealing with inflammation - need turmeric, ginger, and antioxidant-rich ingredients for healing meals..."
-];
+const examplesByType = {
+  cuisines: [
+    "E.g., Italian, Japanese, Mediterranean, Thai...",
+    "E.g., Mexican, Indian, French, Korean...",
+    "E.g., Chinese, Greek, Lebanese, Spanish...",
+    "E.g., Vietnamese, Brazilian, Turkish, Moroccan...",
+    "E.g., American, Ethiopian, Persian, Caribbean..."
+  ],
+  allergies: [
+    "E.g., peanuts, shellfish, dairy...",
+    "E.g., celiac disease, lactose intolerance...",
+    "E.g., kosher dietary restrictions...",
+    "E.g., tree nuts, soy products...",
+    "E.g., egg allergies, fish allergies..."
+  ],
+  cookingTools: [
+    "E.g., air fryer, instant pot, food processor...",
+    "E.g., blender, slow cooker, stand mixer...",
+    "E.g., wok, cast iron skillet, dutch oven...",
+    "E.g., microwave, toaster oven, rice cooker...",
+    "E.g., grill, smoker, sous vide machine..."
+  ],
+  requirements: [
+    "E.g., Training for a marathon - need high-carb, protein-rich meals with sweet potatoes, quinoa, and lean proteins...",
+    "E.g., Preparing for a fight - looking for anti-inflammatory foods like berries, leafy greens, and omega-3 rich fish...",
+    "E.g., Managing blood pressure - need low-sodium recipes with potassium-rich foods like bananas and avocados...",
+    "E.g., Supporting gut health during menstrual cycle - seeking fermented foods, fiber-rich grains, and iron-rich ingredients...",
+    "E.g., Dealing with inflammation - need turmeric, ginger, and antioxidant-rich ingredients for healing meals..."
+  ]
+};
 
 interface AnimatedPlaceholderProps {
   className?: string;
+  type?: keyof typeof examplesByType;
 }
 
-const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
+const AnimatedPlaceholder = ({ className = "", type = "requirements" }: AnimatedPlaceholderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
+
+  const examples = examplesByType[type];
 
   useEffect(() => {
     let currentText = examples[currentIndex];
@@ -37,7 +63,7 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
         pauseTimeout = setTimeout(() => {
           setIsTyping(false);
           eraseText();
-        }, 500);
+        }, 2000);
       }
     };
 
@@ -51,20 +77,20 @@ const AnimatedPlaceholder = ({ className = "" }: AnimatedPlaceholderProps) => {
           setTimeout(() => {
             setCurrentIndex((prev) => (prev + 1) % examples.length);
             setIsTyping(true);
-          }, 250);
+          }, 500);
         }
       }, 25);
 
       return () => clearInterval(eraseInterval);
     };
 
-    typingInterval = setInterval(typeNextChar, 25);
+    typingInterval = setInterval(typeNextChar, 50);
 
     return () => {
       if (typingInterval) clearInterval(typingInterval);
       if (pauseTimeout) clearTimeout(pauseTimeout);
     };
-  }, [currentIndex, isTyping]);
+  }, [currentIndex, isTyping, examples]);
 
   return (
     <div className={`relative min-h-[3rem] sm:min-h-[2rem] mb-2 ${className}`}>

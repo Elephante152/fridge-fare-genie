@@ -2,7 +2,7 @@ import { Globe } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from 'framer-motion';
-import AnimatedPlaceholder from './AnimatedPlaceholder';
+import AnimatedPlaceholder from '../AnimatedPlaceholder';
 
 interface CuisinesSectionProps {
   value: string;
@@ -26,7 +26,7 @@ const CuisinesSection = ({ value, onChange }: CuisinesSectionProps) => {
           onChange={(e) => onChange(e.target.value)}
           className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
         />
-        {!value && <AnimatedPlaceholder />}
+        {!value && <AnimatedPlaceholder type="cuisines" />}
       </div>
     </motion.div>
   );
