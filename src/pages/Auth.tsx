@@ -20,8 +20,8 @@ const AuthPage = () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           toast({
-            title: "Already signed in",
-            description: "Redirecting you to the app...",
+            title: "Already in the kitchen! 🔥",
+            description: "Redirecting you to your recipe workspace...",
           });
           navigate("/recipe");
         }
@@ -38,8 +38,8 @@ const AuthPage = () => {
       async (event: AuthChangeEvent, session) => {
         if (event === 'SIGNED_IN' && session) {
           toast({
-            title: "Success!",
-            description: "You have successfully signed in.",
+            title: "Welcome to the kitchen! 🚀",
+            description: "Time to create some culinary magic.",
           });
           navigate("/recipe");
         }
@@ -49,15 +49,14 @@ const AuthPage = () => {
         }
         if (event === 'USER_UPDATED') {
           toast({
-            title: "Account updated",
-            description: "Your account has been successfully updated.",
+            title: "Profile fresh out the oven! ✨",
+            description: "Your account has been updated with that special sauce.",
           });
         }
-        // Handle specific error cases
         if (event === 'PASSWORD_RECOVERY') {
           toast({
-            title: "Password recovery email sent",
-            description: "Please check your email for password reset instructions.",
+            title: "Check your inbox! 📬",
+            description: "We've sent you the secret ingredient to reset your password.",
           });
         }
       }
@@ -71,22 +70,24 @@ const AuthPage = () => {
   const getErrorMessage = (error: string) => {
     switch (error) {
       case 'invalid_credentials':
-        return 'Invalid email or password. Please try again.';
+        return "Yo, those credentials aren't hitting right! Double-check and try again.";
       case 'email_not_confirmed':
-        return 'Please verify your email address before signing in.';
+        return "Hold up! You need to verify your email first. Check your inbox for the golden ticket.";
       case 'user_not_found':
-        return 'No account found with this email address.';
+        return "No account in the kitchen with that email. Time to sign up and join the crew!";
       case 'too_many_requests':
-        return 'Too many attempts. Please try again later.';
+        return "Slow down, chef! Too many attempts. Take a breather and try again in a bit.";
+      case 'invalid_grant':
+        return "Hey! You're trying to cook without ingredients. Fill in both email and password!";
       default:
-        return 'An error occurred. Please try again.';
+        return "Something's not simmering right. Let's try that again!";
     }
   };
 
   const handleAuthError = (error: AuthError) => {
     setError(error.message);
     toast({
-      title: "Authentication Error",
+      title: "Whoops! Kitchen mishap! 🔧",
       description: getErrorMessage(error.message),
       variant: "destructive",
     });
@@ -97,7 +98,7 @@ const AuthPage = () => {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <Loader2 className="h-6 w-6 animate-spin text-brand-myrtleGreen" />
-          <span className="text-brand-jet">Loading...</span>
+          <span className="text-brand-jet">Preheating the oven...</span>
         </div>
       </div>
     );
@@ -111,7 +112,7 @@ const AuthPage = () => {
             Welcome to Recipe Generator
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to start generating personalized recipes
+            Sign in to start cooking up some digital deliciousness
           </p>
         </div>
         {error && (
@@ -144,20 +145,20 @@ const AuthPage = () => {
             localization={{
               variables: {
                 sign_in: {
-                  email_input_placeholder: "Your email address",
-                  password_input_placeholder: "Your password",
+                  email_input_placeholder: "Drop your email here",
+                  password_input_placeholder: "Your secret recipe (password)",
                   email_label: "Email",
                   password_label: "Password",
-                  button_label: "Sign in",
-                  loading_button_label: "Signing in ...",
+                  button_label: "Let's Cook! 🔥",
+                  loading_button_label: "Heating up...",
                 },
                 sign_up: {
                   email_input_placeholder: "Your email address",
-                  password_input_placeholder: "Create a password",
+                  password_input_placeholder: "Create a strong password",
                   email_label: "Email",
                   password_label: "Password",
-                  button_label: "Create account",
-                  loading_button_label: "Creating account ...",
+                  button_label: "Join the Kitchen! 👩‍🍳",
+                  loading_button_label: "Setting up your kitchen...",
                 },
               },
             }}
