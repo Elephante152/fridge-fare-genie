@@ -37,7 +37,11 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
           duration: 1500,
         });
       } else {
-        await saveRecipe(recipe);
+        const recipeToSave = {
+          ...recipe,
+          created_at: new Date().toISOString(),
+        };
+        await saveRecipe(recipeToSave);
         setLocalIsSaved(true);
         toast({
           title: "Recipe saved!",
