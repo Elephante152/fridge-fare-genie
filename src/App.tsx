@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import AuthPage from "./pages/Auth";
 import SavedRecipes from "./pages/SavedRecipes";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Create a client
@@ -52,6 +53,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
           <Sonner />
