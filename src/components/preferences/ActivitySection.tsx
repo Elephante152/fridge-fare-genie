@@ -2,11 +2,12 @@ import { Activity } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from 'framer-motion';
+import { ActivityLevel } from '@/types/preferences';
 
 interface ActivitySectionProps {
-  value: string;
-  onChange: (value: string) => void;
-  activityLevels: string[];
+  value: ActivityLevel;
+  onChange: (value: ActivityLevel) => void;
+  activityLevels: ActivityLevel[];
 }
 
 const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionProps) => {

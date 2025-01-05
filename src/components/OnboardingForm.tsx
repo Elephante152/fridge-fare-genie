@@ -5,6 +5,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Wand2, BarChart, Coffee } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Database } from '@/integrations/supabase/types';
@@ -12,9 +13,8 @@ import DietTypeSection from './preferences/DietTypeSection';
 import AllergiesSection from './preferences/AllergiesSection';
 import CuisinesSection from './preferences/CuisinesSection';
 import ActivitySection from './preferences/ActivitySection';
-
-type DietType = Database['public']['Enums']['diet_type'];
-type ActivityLevel = Database['public']['Enums']['activity_level'];
+import AnimatedPlaceholder from './AnimatedPlaceholder';
+import { DietType, ActivityLevel } from '@/types/preferences';
 
 const DIET_TYPES: DietType[] = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'];
 const ACTIVITY_LEVELS: ActivityLevel[] = ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'];
@@ -81,7 +81,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
         return (
           <DietTypeSection
             value={formData.dietType}
-            onChange={(value) => setFormData({ ...formData, dietType: value })}
+            onChange={(value: DietType) => setFormData({ ...formData, dietType: value })}
             dietTypes={DIET_TYPES}
           />
         );
@@ -103,7 +103,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
         return (
           <ActivitySection
             value={formData.activityLevel}
-            onChange={(value) => setFormData({ ...formData, activityLevel: value })}
+            onChange={(value: ActivityLevel) => setFormData({ ...formData, activityLevel: value })}
             activityLevels={ACTIVITY_LEVELS}
           />
         );

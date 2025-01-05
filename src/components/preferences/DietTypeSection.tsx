@@ -2,11 +2,12 @@ import { Utensils } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from 'framer-motion';
+import { DietType } from '@/types/preferences';
 
 interface DietTypeSectionProps {
-  value: string;
-  onChange: (value: string) => void;
-  dietTypes: string[];
+  value: DietType;
+  onChange: (value: DietType) => void;
+  dietTypes: DietType[];
 }
 
 const DietTypeSection = ({ value, onChange, dietTypes }: DietTypeSectionProps) => {

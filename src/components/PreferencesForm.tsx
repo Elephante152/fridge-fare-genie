@@ -4,33 +4,39 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Loader2, BarChart, Coffee } from 'lucide-react';
-import { Database } from '@/integrations/supabase/types';
 import { supabase } from '@/integrations/supabase/client';
 import DietTypeSection from './preferences/DietTypeSection';
 import AllergiesSection from './preferences/AllergiesSection';
 import CuisinesSection from './preferences/CuisinesSection';
 import ActivitySection from './preferences/ActivitySection';
-
-type DietType = Database['public']['Enums']['diet_type'];
-type ActivityLevel = Database['public']['Enums']['activity_level'];
-type Profile = Database['public']['Tables']['profiles']['Row'];
-
-interface PreferencesFormProps {
-  initialData: Profile;
-  onComplete: () => void;
-}
+import AnimatedPlaceholder from './AnimatedPlaceholder';
+import { DietType, ActivityLevel } from '@/types/preferences';
 
 const DIET_TYPES: DietType[] = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'];
 const ACTIVITY_LEVELS: ActivityLevel[] = ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'];
 
+interface PreferencesFormProps {
+  initialData: {
+    diet_type: DietType | null;
+    allergies: string[] | null;
+    favorite_cuisines: string[] | null;
+    activity_level: ActivityLevel | null;
+    calorie_intake: number | null;
+    meals_per_day: number | null;
+    preferred_cooking_tools: string[] | null;
+  };
+  onComplete: () => void;
+}
+
 const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComplete }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    dietType: initialData.diet_type || 'Omnivore',
+    dietType: initialData.diet_type || 'Omnivore' as DietType,
     allergies: (initialData.allergies || []).join(', '),
     favoriteCuisines: (initialData.favorite_cuisines || []).join(', '),
-    activityLevel: initialData.activity_level || 'Moderately Active',
+    activityLevel: initialData.activity_level || 'Moderately Active' as ActivityLevel,
     calorieIntake: initialData.calorie_intake || 2000,
     mealsPerDay: initialData.meals_per_day || 3,
     preferredCookingTools: (initialData.preferred_cooking_tools || []).join(', '),
@@ -92,7 +98,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComple
       <form onSubmit={handleSubmit} className="space-y-8">
         <DietTypeSection
           value={formData.dietType}
-          onChange={(value) => setFormData({ ...formData, dietType: value })}
+          onChange={(value: DietType) => setFormData({ ...formData, dietType: value })}
           dietTypes={DIET_TYPES}
         />
 
@@ -108,7 +114,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComple
 
         <ActivitySection
           value={formData.activityLevel}
-          onChange={(value) => setFormData({ ...formData, activityLevel: value })}
+          onChange={(value: ActivityLevel) => setFormData({ ...formData, activityLevel: value })}
           activityLevels={ACTIVITY_LEVELS}
         />
 
