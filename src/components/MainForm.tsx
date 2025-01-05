@@ -68,7 +68,7 @@ const MainForm = () => {
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         user_id: user.id,
-        preferences_considered: recipe.preferencesConsidered // Store the preferences that were considered
+        preferences_considered: recipe.preferences_considered // Updated property name here
       }));
 
       setRecipes(recipesToSave);
