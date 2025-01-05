@@ -27,6 +27,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
           description: "Recipe has been removed from your favorites",
         });
       } else {
+        console.log('Saving recipe:', recipe); // Debug log
         await saveRecipe(recipe);
         toast({
           title: "Recipe saved!",
@@ -34,13 +35,14 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         });
       }
     } catch (error) {
+      console.error('Error saving/removing recipe:', error);
       toast({
         title: "Error",
         description: "Failed to save recipe. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setIsClicked(false);
+      setTimeout(() => setIsClicked(false), 300);
     }
   };
 
@@ -49,12 +51,10 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
   const getButtonStyles = () => {
     if (isLoading) return "bg-gray-200";
     if (isSaved) {
-      return isClicked 
-        ? "bg-red-500 hover:bg-red-600 text-white" 
-        : "bg-green-500 hover:bg-green-600 text-white";
+      return "bg-green-500 hover:bg-green-600 text-white";
     }
     return isClicked 
-      ? "bg-green-500 text-white" 
+      ? "bg-green-500 text-white animate-pulse" 
       : "bg-secondary hover:bg-secondary/80";
   };
 
@@ -68,10 +68,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         size="sm"
         onClick={handleToggleSave}
         disabled={isLoading}
-        className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-300
-          ${getButtonStyles()}
-          ${isClicked ? 'animate-pulse' : ''}
-        `}
+        className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-300 ${getButtonStyles()}`}
       >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />

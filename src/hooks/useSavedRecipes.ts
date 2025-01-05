@@ -13,9 +13,11 @@ export const useSavedRecipes = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
+      console.log('Fetching saved recipes for user:', user.id); // Debug log
+
       const { data, error } = await supabase
         .from("saved_recipes")
-        .select("id, title, description, cooking_time, servings, ingredients, instructions, user_id, preferences_considered")
+        .select("*")
         .eq('user_id', user.id);
 
       if (error) {
@@ -23,6 +25,7 @@ export const useSavedRecipes = () => {
         throw error;
       }
 
+      console.log('Fetched saved recipes:', data); // Debug log
       return data || [];
     },
   });
@@ -32,28 +35,32 @@ export const useSavedRecipes = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("User not authenticated");
 
+      console.log('Saving recipe with user_id:', user.id); // Debug log
+
       const recipeToSave = {
         ...recipe,
         user_id: user.id,
       };
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("saved_recipes")
-        .insert([recipeToSave]);
+        .insert([recipeToSave])
+        .select()
+        .single();
 
       if (error) {
         console.error("Error saving recipe:", error);
         throw error;
       }
+
+      console.log('Successfully saved recipe:', data); // Debug log
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["savedRecipes"] });
-      toast({
-        title: "Recipe saved!",
-        description: "The recipe has been added to your favorites.",
-      });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error); // Debug log
       toast({
         title: "Error saving recipe",
         description: "There was a problem saving the recipe. Please try again.",
@@ -80,10 +87,6 @@ export const useSavedRecipes = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["savedRecipes"] });
-      toast({
-        title: "Recipe removed",
-        description: "The recipe has been removed from your favorites.",
-      });
     },
     onError: () => {
       toast({
