@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Recipe } from "@/types/recipe";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 export const useSavedRecipes = () => {
   const { toast } = useToast();
@@ -30,6 +31,30 @@ export const useSavedRecipes = () => {
       return data || [];
     },
   });
+
+  // Set up real-time subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('saved_recipes_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'saved_recipes'
+        },
+        (payload) => {
+          console.log('Real-time update received:', payload);
+          // Invalidate and refetch
+          queryClient.invalidateQueries({ queryKey: ["savedRecipes"] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const saveRecipe = useMutation({
     mutationFn: async (recipe: Recipe) => {
