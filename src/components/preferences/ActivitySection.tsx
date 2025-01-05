@@ -1,4 +1,4 @@
-import { Activity, Bed, Walk, Running, Dumbbell, Bike } from 'lucide-react';
+import { Activity, Bed, Bike, Dumbbell, PersonStanding, Footprints } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { motion } from 'framer-motion';
 import { ActivityLevel } from '@/types/preferences';
@@ -14,11 +14,11 @@ const getActivityIcon = (level: ActivityLevel) => {
     case 'Sedentary':
       return <Bed className="w-6 h-6" />;
     case 'Lightly Active':
-      return <Walk className="w-6 h-6" />;
+      return <PersonStanding className="w-6 h-6" />;
     case 'Moderately Active':
-      return <Bike className="w-6 h-6" />;
+      return <Footprints className="w-6 h-6" />;
     case 'Very Active':
-      return <Running className="w-6 h-6" />;
+      return <Bike className="w-6 h-6" />;
     case 'Extremely Active':
       return <Dumbbell className="w-6 h-6" />;
     default:
@@ -41,6 +41,7 @@ const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionPro
         {activityLevels.map((level) => (
           <button
             key={level}
+            type="button"
             onClick={() => onChange(level)}
             className={`flex items-center w-full p-4 space-x-3 rounded-lg border-2 transition-all duration-200 ${
               value === level 
