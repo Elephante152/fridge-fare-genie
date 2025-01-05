@@ -5,39 +5,32 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
-import { Utensils, AlertTriangle, Globe, Activity, BarChart, Coffee, Wand2 } from 'lucide-react';
+import { Wand2, Coffee, BarChart } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Database } from '@/integrations/supabase/types';
+import DietTypeSection from './onboarding/DietTypeSection';
+import AllergiesSection from './onboarding/AllergiesSection';
+import CuisinesSection from './onboarding/CuisinesSection';
+import ActivitySection from './onboarding/ActivitySection';
 
 type DietType = Database['public']['Enums']['diet_type'];
 type ActivityLevel = Database['public']['Enums']['activity_level'];
 
-interface FormData {
-  dietType: DietType;
-  allergies: string;
-  favoriteCuisines: string;
-  activityLevel: ActivityLevel;
-  calorieIntake: number;
-  mealsPerDay: number;
-  preferredCookingTools: string;
-}
+const DIET_TYPES: DietType[] = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'];
+const ACTIVITY_LEVELS: ActivityLevel[] = ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'];
 
 interface OnboardingFormProps {
   onComplete: () => void;
 }
 
-const DIET_TYPES: DietType[] = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian', 'Keto', 'Paleo'];
-const ACTIVITY_LEVELS: ActivityLevel[] = ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active', 'Extremely Active'];
-
 const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>({
-    dietType: 'Omnivore',
+  const [formData, setFormData] = useState({
+    dietType: 'Omnivore' as DietType,
     allergies: '',
     favoriteCuisines: '',
-    activityLevel: 'Moderately Active',
+    activityLevel: 'Moderately Active' as ActivityLevel,
     calorieIntake: 2000,
     mealsPerDay: 3,
     preferredCookingTools: '',
@@ -83,135 +76,85 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
     }
   };
 
-  const handleNext = () => {
-    if (step < 6) {
-      setStep(step + 1);
-    } else {
-      updateProfile();
-    }
-  };
-
-  const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
-
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Utensils className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Dietary Preferences</h2>
-            </div>
-            <RadioGroup
-              value={formData.dietType}
-              onValueChange={(value: DietType) => setFormData({ ...formData, dietType: value })}
-              className="grid grid-cols-2 gap-4"
-            >
-              {DIET_TYPES.map((diet) => (
-                <div key={diet} className="flex items-center space-x-2">
-                  <RadioGroupItem value={diet} id={diet} />
-                  <Label htmlFor={diet}>{diet}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <DietTypeSection
+            value={formData.dietType}
+            onChange={(value) => setFormData({ ...formData, dietType: value as DietType })}
+            dietTypes={DIET_TYPES}
+          />
         );
       case 2:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <AlertTriangle className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Allergies & Restrictions</h2>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="allergies">List any allergies (comma-separated)</Label>
-              <Textarea
-                id="allergies"
-                value={formData.allergies}
-                onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
-                placeholder="e.g., peanuts, shellfish, dairy"
-              />
-            </div>
-          </div>
+          <AllergiesSection
+            value={formData.allergies}
+            onChange={(value) => setFormData({ ...formData, allergies: value })}
+          />
         );
       case 3:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Globe className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Cuisine Preferences</h2>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="cuisines">Favorite cuisines (comma-separated)</Label>
-              <Textarea
-                id="cuisines"
-                value={formData.favoriteCuisines}
-                onChange={(e) => setFormData({ ...formData, favoriteCuisines: e.target.value })}
-                placeholder="e.g., Italian, Japanese, Mexican"
-              />
-            </div>
-          </div>
+          <CuisinesSection
+            value={formData.favoriteCuisines}
+            onChange={(value) => setFormData({ ...formData, favoriteCuisines: value })}
+          />
         );
       case 4:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Activity className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Activity Level</h2>
-            </div>
-            <RadioGroup
-              value={formData.activityLevel}
-              onValueChange={(value: ActivityLevel) => setFormData({ ...formData, activityLevel: value })}
-              className="space-y-2"
-            >
-              {ACTIVITY_LEVELS.map((level) => (
-                <div key={level} className="flex items-center space-x-2">
-                  <RadioGroupItem value={level} id={level} />
-                  <Label htmlFor={level}>{level}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+          <ActivitySection
+            value={formData.activityLevel}
+            onChange={(value) => setFormData({ ...formData, activityLevel: value as ActivityLevel })}
+            activityLevels={ACTIVITY_LEVELS}
+          />
         );
       case 5:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <BarChart className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Dietary Goals</h2>
-            </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="calories">Daily Calorie Target</Label>
-                <Input
-                  id="calories"
-                  type="number"
-                  value={formData.calorieIntake}
-                  onChange={(e) => setFormData({ ...formData, calorieIntake: parseInt(e.target.value) })}
-                />
+              <div className="flex items-center space-x-2 text-brand-myrtleGreen">
+                <BarChart className="w-5 h-5" />
+                <Label className="text-xl font-semibold">Dietary Goals</Label>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="meals">Meals per Day</Label>
-                <Input
-                  id="meals"
-                  type="number"
-                  value={formData.mealsPerDay}
-                  onChange={(e) => setFormData({ ...formData, mealsPerDay: parseInt(e.target.value) })}
-                />
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="calories">Daily Calorie Target</Label>
+                  <Input
+                    id="calories"
+                    type="number"
+                    value={formData.calorieIntake}
+                    onChange={(e) => setFormData({ ...formData, calorieIntake: parseInt(e.target.value) })}
+                    className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="meals">Meals per Day</Label>
+                  <Input
+                    id="meals"
+                    type="number"
+                    value={formData.mealsPerDay}
+                    onChange={(e) => setFormData({ ...formData, mealsPerDay: parseInt(e.target.value) })}
+                    className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         );
       case 6:
         return (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Coffee className="w-5 h-5 text-brand-myrtleGreen" />
-              <h2 className="text-xl font-semibold">Kitchen Equipment</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-4"
+          >
+            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
+              <Coffee className="w-5 h-5" />
+              <Label className="text-xl font-semibold">Kitchen Equipment</Label>
             </div>
             <div className="space-y-2">
               <Label htmlFor="tools">Available cooking tools (comma-separated)</Label>
@@ -220,9 +163,10 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
                 value={formData.preferredCookingTools}
                 onChange={(e) => setFormData({ ...formData, preferredCookingTools: e.target.value })}
                 placeholder="e.g., air fryer, slow cooker, blender"
+                className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
               />
             </div>
-          </div>
+          </motion.div>
         );
       default:
         return null;
@@ -236,35 +180,38 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
       className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg space-y-8"
     >
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-brand-myrtleGreen">Personalize Your Experience</h1>
+        <h1 className="text-3xl font-bold text-brand-myrtleGreen">Personalize Your Experience</h1>
         <p className="text-gray-600">Step {step} of 6</p>
       </div>
 
-      <div className="h-[300px]">
-        {renderStep()}
-      </div>
+      <div className="min-h-[400px] flex flex-col justify-between">
+        <div className="flex-1">
+          {renderStep()}
+        </div>
 
-      <div className="flex justify-between pt-4">
-        <Button
-          variant="outline"
-          onClick={handleBack}
-          disabled={step === 1}
-        >
-          Back
-        </Button>
-        <Button
-          onClick={handleNext}
-          className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
-        >
-          {step === 6 ? (
-            <div className="flex items-center space-x-2">
-              <span>Complete</span>
-              <Wand2 className="w-4 h-4" />
-            </div>
-          ) : (
-            'Next'
-          )}
-        </Button>
+        <div className="flex justify-between pt-8">
+          <Button
+            variant="outline"
+            onClick={() => step > 1 && setStep(step - 1)}
+            disabled={step === 1}
+            className="border-2 hover:bg-brand-aquamarine/20"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => step === 6 ? updateProfile() : setStep(step + 1)}
+            className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
+          >
+            {step === 6 ? (
+              <div className="flex items-center space-x-2">
+                <span>Complete</span>
+                <Wand2 className="w-4 h-4" />
+              </div>
+            ) : (
+              'Next'
+            )}
+          </Button>
+        </div>
       </div>
     </motion.div>
   );
