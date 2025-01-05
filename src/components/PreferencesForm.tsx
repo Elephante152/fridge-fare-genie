@@ -54,13 +54,13 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComple
       const { error } = await supabase
         .from('profiles')
         .update({
-          diet_type: formData.dietType as DietType,
-          allergies: formData.allergies.split(',').map(item => item.trim()),
-          favorite_cuisines: formData.favoriteCuisines.split(',').map(item => item.trim()),
-          activity_level: formData.activityLevel as ActivityLevel,
+          diet_type: formData.dietType,
+          allergies: formData.allergies.split(',').map(item => item.trim()).filter(Boolean),
+          favorite_cuisines: formData.favoriteCuisines.split(',').map(item => item.trim()).filter(Boolean),
+          activity_level: formData.activityLevel,
           calorie_intake: formData.calorieIntake,
           meals_per_day: formData.mealsPerDay,
-          preferred_cooking_tools: formData.preferredCookingTools.split(',').map(item => item.trim()),
+          preferred_cooking_tools: formData.preferredCookingTools.split(',').map(item => item.trim()).filter(Boolean),
         })
         .eq('id', user.id);
 

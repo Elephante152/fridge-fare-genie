@@ -42,6 +42,7 @@ const DietTypeSection = ({ value, onChange, dietTypes }: DietTypeSectionProps) =
         {dietTypes.map((diet) => (
           <button
             key={diet}
+            type="button"
             onClick={() => onChange(diet)}
             className={`flex flex-col items-center justify-center p-4 space-y-2 rounded-lg border-2 transition-all duration-200 ${
               value === diet 
