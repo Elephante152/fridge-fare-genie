@@ -8,4 +8,5 @@ export interface Recipe {
   ingredients: string[];
   instructions: string[];
   created_at?: string;
+  preferencesConsidered?: string[]; // Add this new property
 }
