@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import AuthPage from "./pages/Auth";
 import SavedRecipes from "./pages/SavedRecipes";
+import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Create a client
@@ -40,6 +41,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <SavedRecipes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

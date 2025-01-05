@@ -32,6 +32,17 @@ const Header = () => {
                 Saved Recipes
               </Link>
             </li>
+            <li>
+              <Link
+                to="/profile"
+                className={cn(
+                  "text-brand-jet/70 hover:text-brand-myrtleGreen transition-colors",
+                  location.pathname === "/profile" && "text-brand-myrtleGreen font-medium"
+                )}
+              >
+                Profile
+              </Link>
+            </li>
           </ul>
         </nav>
         <UserMenu />
