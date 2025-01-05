@@ -48,11 +48,13 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
       whileTap={{ scale: 0.95 }}
     >
       <Button
-        variant={isSaved ? "destructive" : "secondary"}
+        variant={isSaved ? "secondary" : "secondary"}
         size="sm"
         onClick={handleToggleSave}
         disabled={isLoading}
-        className="gap-2 min-w-[160px] relative overflow-hidden"
+        className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-200
+          ${isSaved ? 'bg-green-500 hover:bg-green-600 text-white' : ''}
+        `}
       >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
