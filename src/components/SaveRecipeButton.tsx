@@ -27,7 +27,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
           description: "Recipe has been removed from your favorites",
         });
       } else {
-        console.log('Saving recipe:', recipe); // Debug log
+        console.log('Saving recipe:', recipe);
         await saveRecipe(recipe);
         toast({
           title: "Recipe saved!",
@@ -51,7 +51,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
   const getButtonStyles = () => {
     if (isLoading) return "bg-gray-200";
     if (isSaved) {
-      return "bg-green-500 hover:bg-green-600 text-white";
+      return "bg-red-500 hover:bg-red-600 text-white";
     }
     return isClicked 
       ? "bg-green-500 text-white animate-pulse" 
