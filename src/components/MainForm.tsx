@@ -42,7 +42,8 @@ const MainForm = () => {
           {
             body: { 
               images,
-              requirements
+              requirements,
+              userId: user.id // Pass user ID for preferences context
             }
           }
         );
@@ -56,7 +57,7 @@ const MainForm = () => {
       }
       
       // Generate recipes based on the identified ingredients and/or requirements
-      const generatedRecipes = await generateRecipes(ingredientsData.ingredients, requirements);
+      const generatedRecipes = await generateRecipes(ingredientsData.ingredients, requirements, user.id);
       
       // Transform the recipes to match the database schema
       const recipesToSave = generatedRecipes.map(recipe => ({
@@ -67,11 +68,18 @@ const MainForm = () => {
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         user_id: user.id,
+        preferences_considered: recipe.preferencesConsidered // Store the preferences that were considered
       }));
 
       setRecipes(recipesToSave);
       setCurrentRequirements(requirements);
       setCurrentImages(images);
+      
+      // Show success message with preferences considered
+      toast({
+        title: "Recipes generated successfully!",
+        description: "Your preferences have been taken into account.",
+      });
     } catch (error) {
       console.error('Error:', error);
       toast({
