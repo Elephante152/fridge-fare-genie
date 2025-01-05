@@ -4,11 +4,13 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Textarea } from '@/components/ui/textarea';
+import { Loader2, BarChart, Coffee } from 'lucide-react';
 import { Database } from '@/integrations/supabase/types';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Utensils, AlertTriangle, Globe, Activity, BarChart, Coffee } from 'lucide-react';
+import DietTypeSection from './preferences/DietTypeSection';
+import AllergiesSection from './preferences/AllergiesSection';
+import CuisinesSection from './preferences/CuisinesSection';
+import ActivitySection from './preferences/ActivitySection';
 
 type DietType = Database['public']['Enums']['diet_type'];
 type ActivityLevel = Database['public']['Enums']['activity_level'];
@@ -88,127 +90,75 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({ initialData, onComple
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="space-y-6">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <Utensils className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Diet Type</Label>
-            </div>
-            <RadioGroup
-              value={formData.dietType}
-              onValueChange={(value: DietType) => setFormData({ ...formData, dietType: value })}
-              className="grid grid-cols-2 gap-4"
-            >
-              {DIET_TYPES.map((diet) => (
-                <div key={diet} className="relative">
-                  <RadioGroupItem value={diet} id={diet} className="peer sr-only" />
-                  <Label
-                    htmlFor={diet}
-                    className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50"
-                  >
-                    {diet}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+        <DietTypeSection
+          value={formData.dietType}
+          onChange={(value) => setFormData({ ...formData, dietType: value })}
+          dietTypes={DIET_TYPES}
+        />
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <AlertTriangle className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Allergies</Label>
-            </div>
-            <Textarea
-              value={formData.allergies}
-              onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
-              placeholder="e.g., peanuts, shellfish, dairy"
-              className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
-            />
-          </div>
+        <AllergiesSection
+          value={formData.allergies}
+          onChange={(value) => setFormData({ ...formData, allergies: value })}
+        />
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <Globe className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Favorite Cuisines</Label>
-            </div>
-            <Textarea
-              value={formData.favoriteCuisines}
-              onChange={(e) => setFormData({ ...formData, favoriteCuisines: e.target.value })}
-              placeholder="e.g., Italian, Japanese, Mexican"
-              className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
-            />
-          </div>
+        <CuisinesSection
+          value={formData.favoriteCuisines}
+          onChange={(value) => setFormData({ ...formData, favoriteCuisines: value })}
+        />
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <Activity className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Activity Level</Label>
-            </div>
-            <RadioGroup
-              value={formData.activityLevel}
-              onValueChange={(value: ActivityLevel) => setFormData({ ...formData, activityLevel: value })}
-              className="space-y-2"
-            >
-              {ACTIVITY_LEVELS.map((level) => (
-                <div key={level} className="relative">
-                  <RadioGroupItem value={level} id={level} className="peer sr-only" />
-                  <Label
-                    htmlFor={level}
-                    className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50"
-                  >
-                    {level}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
+        <ActivitySection
+          value={formData.activityLevel}
+          onChange={(value) => setFormData({ ...formData, activityLevel: value })}
+          activityLevels={ACTIVITY_LEVELS}
+        />
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <BarChart className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Dietary Goals</Label>
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2 text-brand-myrtleGreen">
+            <BarChart className="w-5 h-5" />
+            <Label className="text-xl font-semibold">Dietary Goals</Label>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="calories">Daily Calorie Target</Label>
+              <Input
+                id="calories"
+                type="number"
+                value={formData.calorieIntake}
+                onChange={(e) => setFormData({ ...formData, calorieIntake: parseInt(e.target.value) })}
+                className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
+              />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="calories">Daily Calorie Target</Label>
-                <Input
-                  id="calories"
-                  type="number"
-                  value={formData.calorieIntake}
-                  onChange={(e) => setFormData({ ...formData, calorieIntake: parseInt(e.target.value) })}
-                  className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="meals">Meals per Day</Label>
-                <Input
-                  id="meals"
-                  type="number"
-                  value={formData.mealsPerDay}
-                  onChange={(e) => setFormData({ ...formData, mealsPerDay: parseInt(e.target.value) })}
-                  className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="meals">Meals per Day</Label>
+              <Input
+                id="meals"
+                type="number"
+                value={formData.mealsPerDay}
+                onChange={(e) => setFormData({ ...formData, mealsPerDay: parseInt(e.target.value) })}
+                className="border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
+              />
             </div>
           </div>
+        </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-brand-myrtleGreen">
-              <Coffee className="w-5 h-5" />
-              <Label className="text-xl font-semibold">Kitchen Equipment</Label>
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2 text-brand-myrtleGreen">
+            <Coffee className="w-5 h-5" />
+            <Label className="text-xl font-semibold">Kitchen Equipment</Label>
+          </div>
+          <div className="relative">
             <Textarea
               value={formData.preferredCookingTools}
               onChange={(e) => setFormData({ ...formData, preferredCookingTools: e.target.value })}
-              placeholder="e.g., air fryer, slow cooker, blender"
               className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
             />
+            {!formData.preferredCookingTools && <AnimatedPlaceholder />}
           </div>
         </div>
 
         <Button
           type="submit"
-          className="w-full bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 h-12 text-lg"
+          className="w-full bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white h-12 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
           disabled={isLoading}
         >
           {isLoading ? (

@@ -5,14 +5,13 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Wand2, Coffee, BarChart } from 'lucide-react';
+import { Wand2, BarChart, Coffee } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Database } from '@/integrations/supabase/types';
-import DietTypeSection from './onboarding/DietTypeSection';
-import AllergiesSection from './onboarding/AllergiesSection';
-import CuisinesSection from './onboarding/CuisinesSection';
-import ActivitySection from './onboarding/ActivitySection';
+import DietTypeSection from './preferences/DietTypeSection';
+import AllergiesSection from './preferences/AllergiesSection';
+import CuisinesSection from './preferences/CuisinesSection';
+import ActivitySection from './preferences/ActivitySection';
 
 type DietType = Database['public']['Enums']['diet_type'];
 type ActivityLevel = Database['public']['Enums']['activity_level'];
@@ -82,7 +81,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
         return (
           <DietTypeSection
             value={formData.dietType}
-            onChange={(value) => setFormData({ ...formData, dietType: value as DietType })}
+            onChange={(value) => setFormData({ ...formData, dietType: value })}
             dietTypes={DIET_TYPES}
           />
         );
@@ -104,7 +103,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
         return (
           <ActivitySection
             value={formData.activityLevel}
-            onChange={(value) => setFormData({ ...formData, activityLevel: value as ActivityLevel })}
+            onChange={(value) => setFormData({ ...formData, activityLevel: value })}
             activityLevels={ACTIVITY_LEVELS}
           />
         );
@@ -156,15 +155,13 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
               <Coffee className="w-5 h-5" />
               <Label className="text-xl font-semibold">Kitchen Equipment</Label>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="tools">Available cooking tools (comma-separated)</Label>
+            <div className="relative">
               <Textarea
-                id="tools"
                 value={formData.preferredCookingTools}
                 onChange={(e) => setFormData({ ...formData, preferredCookingTools: e.target.value })}
-                placeholder="e.g., air fryer, slow cooker, blender"
                 className="min-h-[100px] border-2 focus:border-brand-myrtleGreen focus:ring-brand-aquamarine"
               />
+              {!formData.preferredCookingTools && <AnimatedPlaceholder />}
             </div>
           </motion.div>
         );
@@ -200,7 +197,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ onComplete }) => {
           </Button>
           <Button
             onClick={() => step === 6 ? updateProfile() : setStep(step + 1)}
-            className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90"
+            className="bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white shadow-lg hover:shadow-xl transition-all duration-200"
           >
             {step === 6 ? (
               <div className="flex items-center space-x-2">
