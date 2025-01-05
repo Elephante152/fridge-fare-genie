@@ -15,8 +15,10 @@ interface SaveRecipeButtonProps {
 const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonProps) => {
   const { saveRecipe, removeSavedRecipe, isSaving, isRemoving } = useSavedRecipes();
   const { toast } = useToast();
+  const [isClicked, setIsClicked] = React.useState(false);
 
   const handleToggleSave = async () => {
+    setIsClicked(true);
     try {
       if (isSaved && savedRecipeId) {
         await removeSavedRecipe(savedRecipeId);
@@ -37,6 +39,8 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         description: "Failed to save recipe. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsClicked(false);
     }
   };
 
@@ -54,6 +58,7 @@ const SaveRecipeButton = ({ recipe, isSaved, savedRecipeId }: SaveRecipeButtonPr
         disabled={isLoading}
         className={`gap-2 min-w-[160px] relative overflow-hidden transition-colors duration-200
           ${isSaved ? 'bg-green-500 hover:bg-green-600 text-white' : ''}
+          ${isClicked && !isSaved ? 'animate-pulse bg-green-400' : ''}
         `}
       >
         {isLoading ? (
