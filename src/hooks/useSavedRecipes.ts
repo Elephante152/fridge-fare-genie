@@ -15,7 +15,7 @@ export const useSavedRecipes = () => {
 
       const { data, error } = await supabase
         .from("saved_recipes")
-        .select("*")
+        .select("id, title, description, cooking_time, servings, ingredients, instructions, user_id, preferences_considered")
         .eq('user_id', user.id);
 
       if (error) {

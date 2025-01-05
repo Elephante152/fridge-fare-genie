@@ -116,6 +116,7 @@ export type Database = {
           id: string
           ingredients: string[]
           instructions: string[]
+          preferences_considered: string[] | null
           servings: number
           title: string
           user_id: string
@@ -127,6 +128,7 @@ export type Database = {
           id?: string
           ingredients: string[]
           instructions: string[]
+          preferences_considered?: string[] | null
           servings: number
           title: string
           user_id: string
@@ -138,6 +140,7 @@ export type Database = {
           id?: string
           ingredients?: string[]
           instructions?: string[]
+          preferences_considered?: string[] | null
           servings?: number
           title?: string
           user_id?: string
