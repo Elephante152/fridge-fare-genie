@@ -31,7 +31,7 @@ const ActivitySection = ({ value, onChange, activityLevels }: ActivitySectionPro
             <RadioGroupItem value={level} id={level} className="peer sr-only" />
             <Label
               htmlFor={level}
-              className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50"
+              className="flex items-center justify-center px-4 py-3 bg-white border-2 border-gray-200 rounded-lg cursor-pointer transition-all peer-checked:border-brand-myrtleGreen peer-checked:bg-brand-aquamarine/20 hover:bg-gray-50 hover:border-brand-myrtleGreen/50"
             >
               {level}
             </Label>
