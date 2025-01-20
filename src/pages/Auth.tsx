@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import EmojiBackground from "@/components/EmojiBackground";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -124,9 +125,11 @@ const AuthPage = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-gradient-to-b from-white to-brand-platinum/10 flex items-center justify-center px-4"
+      className="relative min-h-screen bg-gradient-to-b from-white/80 to-brand-platinum/10 flex items-center justify-center px-4 overflow-hidden"
     >
-      <div className="max-w-md w-full space-y-8">
+      <EmojiBackground />
+      
+      <div className="max-w-md w-full space-y-8 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -185,7 +188,7 @@ const AuthPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-8 bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-brand-aquamarine/20 backdrop-blur-sm"
+          className="mt-8 bg-white/90 backdrop-blur-sm py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-brand-aquamarine/20"
         >
           <Auth
             supabaseClient={supabase}
