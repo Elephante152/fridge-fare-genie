@@ -32,6 +32,11 @@ const Landing = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  // Helper function to navigate to auth with specific mode
+  const navigateToAuth = (mode: 'sign-up' | 'sign-in') => {
+    navigate(`/auth?mode=${mode}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-radial from-brand-platinum via-white to-brand-platinum relative overflow-hidden">
       <EmojiBackground />
@@ -47,16 +52,16 @@ const Landing = () => {
             <div className="flex items-center space-x-3 md:space-x-6">
               <Button
                 variant="ghost"
-                onClick={() => navigate('/auth')}
+                onClick={() => navigateToAuth('sign-in')}
                 className="text-base md:text-lg hover:text-brand-myrtleGreen hover:bg-brand-aquamarine/20 transition-all duration-300 px-3 md:px-4"
               >
                 Login
               </Button>
               <Button
-                onClick={() => navigate('/auth')}
+                onClick={() => navigateToAuth('sign-up')}
                 className="text-base md:text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white transition-all duration-300 animate-shimmer shadow-lg hover:shadow-xl hover:scale-105 px-3 md:px-4"
               >
-                Get Started
+                Create Account
               </Button>
             </div>
           </nav>
@@ -77,10 +82,10 @@ const Landing = () => {
                 Transform your cooking experience with personalized recipes based on the ingredients you have.
               </p>
               <Button
-                onClick={() => navigate('/auth')}
+                onClick={() => navigateToAuth('sign-up')}
                 className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer shadow-xl hover:shadow-2xl hover:scale-105 w-full md:w-auto"
               >
-                Start Cooking
+                Create Free Account
               </Button>
             </div>
           </div>
@@ -143,10 +148,10 @@ const Landing = () => {
               Join now and start generating personalized recipes based on your ingredients.
             </p>
             <Button
-              onClick={() => navigate('/auth')}
+              onClick={() => navigateToAuth('sign-up')}
               className="text-lg bg-brand-myrtleGreen hover:bg-brand-myrtleGreen/90 text-white px-8 py-6 h-auto transition-all duration-300 animate-shimmer shadow-xl hover:shadow-2xl hover:scale-105 w-full md:w-auto"
             >
-              Get Started Now
+              Create Your Account Now
             </Button>
           </div>
         </section>

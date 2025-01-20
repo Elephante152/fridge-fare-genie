@@ -1,18 +1,24 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AuthError, AuthChangeEvent } from '@supabase/supabase-js';
+import { Button } from "@/components/ui/button";
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get('mode') || 'sign-in';
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [view, setView] = useState<'sign_in' | 'sign_up'>(
+    mode === 'sign-up' ? 'sign_up' : 'sign_in'
+  );
 
   useEffect(() => {
     const checkSession = async () => {
@@ -111,21 +117,43 @@ const AuthPage = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold text-gray-900 font-serif">
-            Welcome to Recipe Generator
+            {view === 'sign_up' ? 'Create Your Account' : 'Welcome Back'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to start creating recipes
+            {view === 'sign_up' 
+              ? 'Sign up to start creating delicious recipes'
+              : 'Sign in to continue creating recipes'}
           </p>
         </div>
+
+        <div className="flex justify-center space-x-4 mb-6">
+          <Button
+            variant={view === 'sign_in' ? 'default' : 'outline'}
+            onClick={() => setView('sign_in')}
+            className="w-full"
+          >
+            Sign In
+          </Button>
+          <Button
+            variant={view === 'sign_up' ? 'default' : 'outline'}
+            onClick={() => setView('sign_up')}
+            className="w-full"
+          >
+            Sign Up
+          </Button>
+        </div>
+
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{getErrorMessage(error)}</AlertDescription>
           </Alert>
         )}
+
         <div className="mt-8 bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-brand-aquamarine/20">
           <Auth
             supabaseClient={supabase}
+            view={view}
             appearance={{
               theme: ThemeSupa,
               variables: {
