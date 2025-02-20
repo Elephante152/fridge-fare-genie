@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -46,13 +47,14 @@ serve(async (req) => {
     `;
 
     const systemPrompt = `You are a helpful cooking assistant that generates recipes based on available ingredients, user requirements, and user preferences. 
-    Generate exactly one recipe and return it in JSON format with the following structure:
+    Generate exactly one recipe that makes the best use of the identified ingredients.
+    Return it in JSON format with the following structure:
     {
       "title": "Recipe Title",
       "description": "Brief description that mentions how it aligns with user preferences",
       "cookingTime": "30 minutes",
       "servings": 4,
-      "ingredients": ["ingredient 1", "ingredient 2"],
+      "ingredients": ["ingredient 1 with quantity", "ingredient 2 with quantity"],
       "instructions": ["step 1", "step 2"],
       "preferencesConsidered": {
         "dietType": "User's diet type",
@@ -60,11 +62,12 @@ serve(async (req) => {
         "caloriesPerServing": "estimated calories"
       }
     }
+    Make sure to include specific quantities for each ingredient.
     Do not include any markdown formatting or code blocks in your response. Return only the JSON object.`;
 
     const userPrompt = `Generate a recipe with the following context:
     ${preferencesContext}
-    ${ingredients.length > 0 ? `Available ingredients: ${ingredients.join(', ')}` : ''}
+    Available ingredients: ${ingredients.length > 0 ? ingredients.join(', ') : 'No specific ingredients provided'}
     ${requirements ? `Additional requirements: ${requirements}` : ''}
     
     Important: Unless explicitly overridden in the additional requirements, strictly adhere to:
@@ -72,7 +75,8 @@ serve(async (req) => {
     2. Avoid any listed allergies
     3. Consider their calorie intake goals
     4. Use available cooking tools
-    5. Align with preferred cuisines when possible`;
+    5. Align with preferred cuisines when possible
+    6. Make the best use of the identified ingredients`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

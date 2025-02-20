@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
@@ -34,7 +35,12 @@ serve(async (req) => {
             role: 'system',
             content: `You are a helpful assistant that identifies cooking ingredients in images. 
             Return a JSON array of ingredient names, being as specific as possible about quantities when visible. 
+            When you see ingredients, try to estimate their quantities based on visual cues.
             Consider any dietary restrictions or preferences in your analysis.
+            For each ingredient, try to include:
+            - Name of the ingredient
+            - Estimated quantity (if visible)
+            - Any visible quality indicators (fresh, frozen, ripe, etc.)
             IMPORTANT: Return ONLY a valid JSON array of strings, with no additional formatting or markdown.`,
           },
           {
@@ -64,7 +70,6 @@ serve(async (req) => {
       throw new Error(data.error?.message || 'Failed to analyze images')
     }
 
-    // Parse the content as JSON, removing any potential markdown formatting
     let ingredients;
     try {
       const content = data.choices[0].message.content;
